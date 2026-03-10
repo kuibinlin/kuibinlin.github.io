@@ -1,4 +1,14 @@
-# Open WebUI — Self-Hosted Setup Guide
+---
+layout: post
+title: Open WebUI Self-Hosted Setup Guide (Docker + Ollama + PostgreSQL on Ubuntu)
+date: 2026-03-10 08:10:00 +0800
+published: true #false or true
+categories: local-llm
+toc: true
+media_subpath: /assets/media/2026/open-webui-self-hosted-setup-guide
+image: openwebui.png
+tags: [llm, openwebui, ollama]
+---
 
 A minimal guide to running [Open WebUI](https://github.com/open-webui/open-webui) on a Linux (Ubuntu) server using a single `docker-compose.yml`, with Ollama running on the host and PostgreSQL as the database backend.
 
