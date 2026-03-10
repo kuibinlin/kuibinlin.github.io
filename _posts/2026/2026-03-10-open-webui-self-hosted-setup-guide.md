@@ -161,7 +161,7 @@ Fill in all required values (see the reference below), then save with `Ctrl+O` â
 
 ### `.env.example`
 
-```dotenv
+```bash
 # -------------------------------------------------------
 # Open WebUI
 # -------------------------------------------------------
