@@ -6,6 +6,14 @@
   <script src="/assets/js/subtitle-effect.js" defer></script>
 {% endif %}
 
+{% if page.chart or page.charts %}
+  <script>
+    window.chartConfig = {% if page.charts %}{{ page.charts | jsonify }}{% else %}[{{ page.chart | jsonify }}]{% endif %};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="/assets/js/chart-renderer.js" defer></script>
+{% endif %}
+
 {% if page.map %}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
