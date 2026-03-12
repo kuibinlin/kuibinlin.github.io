@@ -55,7 +55,7 @@ map:
 
 > Why This Post Exists? This morning — 12 March 2026 — my friend **[Haoming Koo](https://haomingkoo.com)** showed me how he'd integrated an interactive map into his [blog post](https://kooexperience.com/travel/posts/italy.html). I thought it was a genuinely elegant touch — the kind of thing that makes a post feel alive rather than flat.
 > By the afternoon I'd used Claude to build a Leaflet map plugin and wire it into this Jekyll static site. Haoming did the inspiring; I did the copy-cat-with-AI-assistance. If you're curious about his work, his personal site is [haomingkoo.com](https://haomingkoo.com) and his GitHub is [@haomingkoo](https://github.com/haomingkoo). Go give him a follow — he's the reason this post exists.
-> This post is partly a test of that integration, and partly an excuse to write something useful: a proper introduction to Singapore for anyone visiting for the first time.
+> This post is partly a test of that integration, and partly an excuse to write something useful: a proper introduction to Singapore for anyone visiting for the first time. If you're interested in adding interactive maps to your own Jekyll site, I've written a separate post walking through the full setup — [read it here](https://linsnotes.com/posts/how-to-add-interactive-maps-to-jekyll-using-leaflet-and-openstreetmap/).
 {: .prompt-info }
 ---
 
