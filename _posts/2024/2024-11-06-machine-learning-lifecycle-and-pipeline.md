@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Machine Learning Lifecycle and Pipeline
-date: 2024-11-06 12:30:00 +/-tttt
+date: 2024-11-06 12:30:00 +0800
 published: true #false or true
 categories: ML
 media_subpath: /assets/media/2024/machine-learning-lifecycle-and-pipeline/

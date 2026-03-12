@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Setting Up Ruby, RubyGems, and Build-Essential for Jekyll
-date: 2024-11-05 12:30:00 +/-tttt
+date: 2024-11-05 12:30:00 +0800
 published: true #false or true
 categories: ML
 media_subpath: /assets/media/2024/setting-up-ruby-rubygems-and-build-essential-for-jekyll

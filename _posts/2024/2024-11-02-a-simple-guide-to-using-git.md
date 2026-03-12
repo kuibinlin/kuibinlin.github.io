@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A Simple Guide to Using Git
-date: 2024-11-02 12:30:00 +/-tttt
+date: 2024-11-02 12:30:00 +0800
 published: true #false or true
 categories: ML
 media_subpath: /assets/media/2024/simple-guide-to-using-git/

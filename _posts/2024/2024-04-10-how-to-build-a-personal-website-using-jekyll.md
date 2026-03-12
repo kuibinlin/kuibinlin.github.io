@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How to Build a Personal Website Using Jekyll
-date: 2024-04-10 20:30:00 +/-tttt
+date: 2024-04-10 20:30:00 +0800
 published: true #false or true
 categories: website
 tags: [jekyll, ruby]

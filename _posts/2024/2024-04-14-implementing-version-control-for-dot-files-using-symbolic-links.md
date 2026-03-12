@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Implementing Version Control for Dot Files using Symbolic Links
-date: 2024-04-14 12:30:00 +/-tttt
+date: 2024-04-14 12:30:00 +0800
 published: true #false or true
 categories: linux
 tags: [linux, dotfiles]
