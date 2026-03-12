@@ -11,10 +11,27 @@
 
 // sidebar-right 'Recently Updated' use blue accent color
 #access-lastmod a:hover {
-    color: var(--toc-highlight) !important;
-    border-bottom: 1px solid var(--toc-highlight) !important;
-  }
+  color: var(--toc-highlight) !important;
+  border-bottom: 1px solid var(--toc-highlight) !important;
+}
 
+// site title use blue accent color
+#sidebar .site-title {
+  color: #062a61 !important;
+}
+
+// Subtitle effect text styling
+.site-subtitle {
+  color: #0d6efd !important;
+  font-weight: 600 !important;
+}
+
+// Subtitle effect cursor styling
+.subtitle-cursor {
+  color: #0d6efd !important;
+  font-weight: 600 !important;
+  font-size: 1.2em !important;
+}
 
 // Back-to-top progress circle bar use blue accent color
 #progress-circle {
@@ -30,4 +47,3 @@
     transition: stroke-dashoffset 0.2s;
   }
 }
-

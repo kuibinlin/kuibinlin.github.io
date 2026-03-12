@@ -1,6 +1,11 @@
 <script src="/assets/js/progress.js" defer></script>
 <script src="/assets/js/auto-update.js" defer></script>
 
+{% if site.subtitle_effect %}
+  <script>window.subtitleEffectConfig = {{ site.subtitle_effect | jsonify }};</script>
+  <script src="/assets/js/subtitle-effect.js" defer></script>
+{% endif %}
+
 {% if page.map %}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

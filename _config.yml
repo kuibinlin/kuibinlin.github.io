@@ -14,9 +14,28 @@ timezone: Asia/Singapore
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Lin's Notes # the main title
+title: Kuibin Lin # the main title
 
 tagline: Lin's random notes # it will display as the subtitle
+
+# Sidebar subtitle animation (replaces the static tagline visually)
+# Supported types: typewriter (typing effect) | decode (scramble/decrypt effect)
+# To disable: comment out the entire subtitle_effect block
+subtitle_effect:
+  type: decode                # choose: typewriter | decode
+  strings:                    # phrases to cycle through
+    - "AI Engineer based in Singapore"
+    - "Building AI that Ships"
+    - "Turning Ideas into Products"
+  # Shared options
+  backDelay: 2000             # ms — pause before switching to next phrase
+  startDelay: 500             # ms — delay before animation starts
+  # Typewriter-only options
+  typeSpeed: 80               # ms — speed per character typed
+  backSpeed: 40               # ms — speed per character deleted
+  # Decode-only options
+  decodeSpeed: 50             # ms — speed per scramble frame
+  decodeSpeed: 50       # decode only — ms per scramble frame
 
 description: >- # used by seo meta and the atom feed
   Lin's Notes
