@@ -1,2 +1,8 @@
 <script src="/assets/js/progress.js" defer></script>
 <script src="/assets/js/auto-update.js" defer></script>
+
+{% if page.map %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/assets/js/map-renderer.js" defer></script>
+{% endif %}
