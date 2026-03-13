@@ -66,6 +66,7 @@
 
     var options = {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {},
     };
 
