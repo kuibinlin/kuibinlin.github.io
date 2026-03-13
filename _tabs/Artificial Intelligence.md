@@ -5,5 +5,8 @@ icon: fas fa-cubes
 order: 5
 ---
 
-> Attention Visualiser <br> [**Attention Visualiser**](http://linsnotes.com/attention-visualiser/)
+> AI Playground <br> [**AI Playground**](/ai-playground/) — Experiment with 6 AI models: text-to-image, chat, vision, sentiment analysis, summarization, and translation.
+{: .prompt-info }
+
+> Attention Visualiser <br> [**Attention Visualiser**](/attention-visualiser/) — Learn how transformer attention works step by step.
 {: .prompt-info }

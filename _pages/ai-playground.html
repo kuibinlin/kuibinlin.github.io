@@ -1,0 +1,1502 @@
+---
+layout: page
+title: AI Playground
+permalink: /ai-playground/
+---
+
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     AI PLAYGROUND — STYLES
+     Inherits from Jekyll Chirpy theme via CSS custom properties.
+  ══════════════════════════════════════════════════════════════ */
+
+  #ai-playground {
+    --bg: var(--main-bg, #faf8f4);
+    --surface: var(--card-bg, #ffffff);
+    --border: var(--border-color, #e0d9ce);
+    --text: var(--text-color, #1e1b16);
+    --muted: var(--label-color, #7a7265);
+    --accent: var(--link-color, #b5451b);
+    --accent-bg: rgba(181, 69, 27, 0.1);
+    --success: #2d7a3a;
+    --success-bg: rgba(45, 122, 58, 0.1);
+    --info: #2a6496;
+    --info-bg: rgba(42, 100, 150, 0.1);
+    --danger: #c0392b;
+    --danger-bg: rgba(192, 57, 43, 0.1);
+
+    --mono: "JetBrains Mono", monospace;
+    --sans: "Plus Jakarta Sans", sans-serif;
+    --radius: 10px;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+
+    font-family: var(--sans);
+    color: var(--text);
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+  }
+
+  [data-mode="dark"] #ai-playground {
+    --accent-bg: rgba(220, 120, 70, 0.14);
+    --success-bg: rgba(76, 175, 96, 0.14);
+    --info-bg: rgba(90, 168, 213, 0.14);
+    --danger-bg: rgba(231, 76, 60, 0.14);
+    --success: #4caf60;
+    --info: #5aa8d5;
+  }
+
+  /* ── Header ── */
+  .pg-header {
+    text-align: center;
+    padding: 1.5rem 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .pg-header .kicker {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .pg-header h2 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+  .pg-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── Tab Navigation ──────────────────────────────
+     Narrow (default): 2 rows of 3 — no scroll ever
+     Wide   (≥ 760px): 1 row of 6
+     Only one place to change if you add/remove tabs:
+     adjust flex basis (33.333% = 3 per row) and min-width.
+  ─────────────────────────────────────────────────── */
+  .pg-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+  .pg-tab {
+    flex: 0 0 33.333%;        /* 3 per row → 2 rows of 3 */
+    padding: 0.65rem 0.25rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+  .pg-tab:hover  { color: var(--text); }
+  .pg-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .pg-tab .tab-icon { font-size: 1rem; }
+
+  /* Wide: single row */
+  @media (min-width: 760px) {
+    .pg-tabs { flex-wrap: nowrap; }
+    .pg-tab  { flex: 1; padding: 0.7rem 0.5rem; font-size: 0.78rem; }
+  }
+
+  /* ── Panel Container ── */
+  .pg-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .pg-panel.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Shared Card ── */
+  .pg-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Model Badge ── */
+  .model-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    background: var(--info-bg);
+    color: var(--info);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  /* ── Input Areas ── */
+  .pg-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    resize: vertical;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .pg-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .pg-textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .pg-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .pg-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* ── Buttons ── */
+  .pg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0.8rem;
+  }
+  .pg-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+  .pg-btn:active {
+    transform: translateY(0);
+  }
+  .pg-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
+  /* ── Output / Result ── */
+  .pg-result {
+    margin-top: 1.2rem;
+    padding: 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    min-height: 60px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .pg-result.empty {
+    color: var(--muted);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+  }
+
+  /* ── Loading Spinner ── */
+  .pg-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ── Status Messages ── */
+  .pg-status {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    color: var(--muted);
+    min-height: 1.2em;
+  }
+  .pg-status.error {
+    color: var(--danger);
+  }
+  .pg-status.success {
+    color: var(--success);
+  }
+
+  /* ── Image Output ── */
+  .pg-img-output {
+    margin-top: 1.2rem;
+    text-align: center;
+  }
+  .pg-img-output img {
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Image Upload / Drop Zone ── */
+  .pg-dropzone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 0.85rem;
+    position: relative;
+  }
+  .pg-dropzone:hover,
+  .pg-dropzone.dragover {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+  .pg-dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .pg-dropzone .drop-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .pg-or-divider {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+  }
+  .pg-preview-img {
+    max-width: 300px;
+    max-height: 250px;
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    border: 1.5px solid var(--border);
+  }
+
+  /* ── Sentiment Bars ── */
+  .sentiment-bar-container {
+    margin-top: 1rem;
+  }
+  .sentiment-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  .sentiment-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: 90px;
+    text-align: right;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .sentiment-bar-track {
+    flex: 1;
+    height: 26px;
+    background: var(--bg);
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .sentiment-bar-fill {
+    height: 100%;
+    border-radius: 13px;
+    transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #fff;
+    min-width: 0;
+  }
+  .sentiment-bar-fill.positive {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+  }
+  .sentiment-bar-fill.negative {
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+  }
+
+  /* ── Classification Labels ── */
+  .classify-results {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .classify-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .classify-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    width: 140px;
+    text-align: right;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .classify-bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--bg);
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .classify-bar-fill {
+    height: 100%;
+    border-radius: 11px;
+    background: linear-gradient(90deg, var(--accent), #e07b4f);
+    transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: #fff;
+    min-width: 0;
+  }
+
+  /* ── Chat Interface ── */
+  .chat-messages {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .chat-bubble {
+    max-width: 80%;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .chat-bubble.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-bubble.assistant {
+    align-self: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+  }
+  .chat-bubble.thinking {
+    align-self: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-style: italic;
+  }
+  .chat-input-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .chat-input-row .pg-input {
+    flex: 1;
+  }
+  .chat-input-row .pg-btn {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+
+  /* ── Info Note ── */
+  .pg-note {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.8rem;
+    line-height: 1.5;
+    padding: 0.6rem 0.8rem;
+    background: var(--info-bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--info);
+  }
+
+  /* ── Layout helpers ── */
+  .pg-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    display: block;
+    color: var(--text);
+  }
+  .pg-section {
+    margin-bottom: 1rem;
+  }
+
+  /* ── Example Prompts ── */
+  .pg-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  .pg-examples-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    width: 100%;
+    margin-bottom: 0.1rem;
+  }
+  .pg-example-chip {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .pg-example-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  /* ── Character Counter ── */
+  .pg-char-count {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 0.25rem;
+  }
+  .pg-char-count.warn {
+    color: var(--danger);
+  }
+
+  /* ── Chat Controls ── */
+  .chat-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+  }
+  .pg-btn-ghost {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pg-btn-ghost:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: var(--danger-bg);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    #ai-playground {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    .pg-card {
+      padding: 1rem;
+    }
+    .pg-tab {
+      padding: 0.6rem 0.7rem;
+      font-size: 0.72rem;
+    }
+    .chat-bubble {
+      max-width: 90%;
+    }
+    .sentiment-label,
+    .classify-label {
+      width: 70px;
+      font-size: 0.65rem;
+    }
+    .pg-example-chip {
+      font-size: 0.66rem;
+      padding: 0.25rem 0.55rem;
+    }
+  }
+</style>
+
+<div id="ai-playground">
+  <!-- Header -->
+  <div class="pg-header">
+    <div class="kicker">Hugging Face Inference API</div>
+    <h2>AI Playground</h2>
+    <p class="subtitle">
+      Experiment with 6 state-of-the-art AI models directly in your browser. All
+      inference runs on Hugging Face's cloud — no data is stored.
+    </p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="pg-tabs" role="tablist">
+    <button class="pg-tab active" data-tab="text2img" role="tab">
+      <span class="tab-icon">&#x1f3a8;</span> Text to Image
+    </button>
+    <button class="pg-tab" data-tab="chat" role="tab">
+      <span class="tab-icon">&#x1f4ac;</span> AI Chat
+    </button>
+    <button class="pg-tab" data-tab="vision" role="tab">
+      <span class="tab-icon">&#x1f441;</span> Vision
+    </button>
+    <button class="pg-tab" data-tab="sentiment" role="tab">
+      <span class="tab-icon">&#x1f4ca;</span> Sentiment
+    </button>
+    <button class="pg-tab" data-tab="summarize" role="tab">
+      <span class="tab-icon">&#x1f4dd;</span> Summarize
+    </button>
+    <button class="pg-tab" data-tab="translate" role="tab">
+      <span class="tab-icon">&#x1f310;</span> Translate
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 1: Text-to-Image
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel active" data-panel="text2img">
+    <div class="pg-card">
+      <span class="model-badge"
+        >&#x1f917; stabilityai/stable-diffusion-xl-base-1.0</span
+      >
+      <div class="pg-section">
+        <label class="pg-label">Describe the image you want to generate</label>
+        <textarea
+          class="pg-textarea"
+          id="img-prompt"
+          placeholder="Describe your image in detail — style, subject, lighting, mood..."
+          rows="3"
+        ></textarea>
+        <div class="pg-examples">
+          <span class="pg-examples-label">Try an example:</span>
+          <button
+            class="pg-example-chip"
+            data-target="img-prompt"
+            data-text="A cat astronaut floating in space with Earth in the background, digital art, vibrant colors"
+          >
+            Cat astronaut
+          </button>
+          <button
+            class="pg-example-chip"
+            data-target="img-prompt"
+            data-text="A cozy Japanese ramen shop at night, rain outside, warm lantern glow, watercolor style"
+          >
+            Ramen shop
+          </button>
+          <button
+            class="pg-example-chip"
+            data-target="img-prompt"
+            data-text="Minimalist geometric mountains at sunset, flat design, pastel gradients"
+          >
+            Geometric mountains
+          </button>
+        </div>
+      </div>
+      <button class="pg-btn" id="img-btn" onclick="generateImage()">
+        <span>Generate Image</span>
+      </button>
+      <div class="pg-note">
+        Generation may take 10–30 seconds. The model runs on HF's free inference
+        tier.
+      </div>
+      <div id="img-status" class="pg-status"></div>
+      <div id="img-output" class="pg-img-output"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 2: AI Chat
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel" data-panel="chat">
+    <div class="pg-card">
+      <span class="model-badge">&#x1f917; meta-llama/Llama-3.2-1B-Instruct</span>
+      <div class="chat-controls">
+        <button class="pg-btn-ghost" id="chat-clear-btn" onclick="clearChat()">
+          Clear chat
+        </button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-bubble assistant">
+          Hello! I'm a helpful AI assistant. Ask me anything.
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input
+          class="pg-input"
+          id="chat-input"
+          type="text"
+          placeholder="Type your message..."
+          onkeydown="
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              sendChat();
+            }
+          "
+        />
+        <button
+          class="pg-btn"
+          id="chat-btn"
+          onclick="sendChat()"
+          style="margin-top: 0"
+        >
+          Send
+        </button>
+      </div>
+      <div class="pg-examples" style="margin-top: 0.6rem">
+        <span class="pg-examples-label">Try asking:</span>
+        <button
+          class="pg-example-chip"
+          data-target="chat-input"
+          data-text="What is the difference between machine learning and deep learning?"
+        >
+          ML vs deep learning
+        </button>
+        <button
+          class="pg-example-chip"
+          data-target="chat-input"
+          data-text="Explain quantum computing in simple terms"
+        >
+          Quantum computing
+        </button>
+        <button
+          class="pg-example-chip"
+          data-target="chat-input"
+          data-text="Give me 3 tips for writing clean code"
+        >
+          Clean code tips
+        </button>
+      </div>
+      <div class="pg-note">
+        Conversation context is maintained within this session. Responses come
+        from Llama-3.2-1B.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 3: Image Classification (Vision)
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel" data-panel="vision">
+    <div class="pg-card">
+      <span class="model-badge">&#x1f917; google/vit-large-patch16-224</span>
+      <div class="pg-section">
+        <label class="pg-label">Upload an image to classify</label>
+        <div class="pg-dropzone" id="vision-dropzone">
+          <span class="drop-icon">&#x1f4f7;</span>
+          <span>Drag & drop, paste from clipboard, or click to browse</span>
+          <input
+            type="file"
+            accept="image/*"
+            id="vision-file"
+            onchange="handleVisionFile(this)"
+          />
+        </div>
+      </div>
+      <div class="pg-or-divider">— or —</div>
+      <div class="pg-section">
+        <label class="pg-label">Paste an image URL</label>
+        <input
+          class="pg-input"
+          id="vision-url"
+          type="url"
+          placeholder="https://example.com/photo.jpg"
+          oninput="handleVisionUrl(this.value)"
+        />
+      </div>
+      <button class="pg-btn" id="vision-btn" onclick="classifyImage()" disabled>
+        Classify Image
+      </button>
+      <div class="pg-note">
+        The model identifies objects in photos — try uploading a picture of an
+        animal, food, vehicle, or everyday object.
+      </div>
+      <div id="vision-status" class="pg-status"></div>
+      <div id="vision-output" class="classify-results"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 4: Sentiment Analysis
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel" data-panel="sentiment">
+    <div class="pg-card">
+      <span class="model-badge"
+        >&#x1f917; distilbert-base-uncased-finetuned-sst-2-english</span
+      >
+      <div class="pg-section">
+        <label class="pg-label">Enter text to analyze sentiment</label>
+        <textarea
+          class="pg-textarea"
+          id="sentiment-input"
+          placeholder="Type or paste any English text — a review, tweet, comment..."
+          rows="3"
+        ></textarea>
+        <div class="pg-examples">
+          <span class="pg-examples-label">Try an example:</span>
+          <button
+            class="pg-example-chip"
+            data-target="sentiment-input"
+            data-text="I absolutely love this product! It exceeded all my expectations and the quality is outstanding."
+          >
+            Positive review
+          </button>
+          <button
+            class="pg-example-chip"
+            data-target="sentiment-input"
+            data-text="The service was terrible, I waited 45 minutes and my order was completely wrong."
+          >
+            Negative review
+          </button>
+          <button
+            class="pg-example-chip"
+            data-target="sentiment-input"
+            data-text="The movie was okay I guess, nothing special but not the worst I've seen."
+          >
+            Mixed feelings
+          </button>
+        </div>
+      </div>
+      <button class="pg-btn" id="sentiment-btn" onclick="analyzeSentiment()">
+        Analyze Sentiment
+      </button>
+      <div id="sentiment-status" class="pg-status"></div>
+      <div id="sentiment-output" class="sentiment-bar-container"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 5: Summarization
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel" data-panel="summarize">
+    <div class="pg-card">
+      <span class="model-badge">&#x1f917; facebook/bart-large-cnn</span>
+      <div class="pg-section">
+        <label class="pg-label"
+          >Paste an article or long text to summarize</label
+        >
+        <textarea
+          class="pg-textarea"
+          id="summary-input"
+          placeholder="Paste a news article, essay, or any long text here (at least a few sentences)..."
+          rows="6"
+          oninput="updateCharCount('summary-input', 'summary-charcount', 5000)"
+        ></textarea>
+        <div class="pg-char-count" id="summary-charcount">
+          0 / 5,000 characters
+        </div>
+        <div class="pg-examples">
+          <span class="pg-examples-label">Try an example:</span>
+          <button
+            class="pg-example-chip"
+            data-target="summary-input"
+            data-text="Artificial intelligence has transformed the way we interact with technology. From virtual assistants like Siri and Alexa to recommendation algorithms on Netflix and Spotify, AI is embedded in our daily lives. Machine learning, a subset of AI, allows systems to learn from data without being explicitly programmed. Deep learning, which uses neural networks with many layers, has achieved breakthroughs in image recognition, natural language processing, and game playing. However, the rapid advancement of AI also raises concerns about job displacement, privacy, algorithmic bias, and the need for regulation. Researchers and policymakers are working to ensure that AI development remains beneficial and aligned with human values."
+          >
+            AI overview article
+          </button>
+        </div>
+      </div>
+      <button class="pg-btn" id="summary-btn" onclick="summarizeText()">
+        Summarize
+      </button>
+      <div id="summary-status" class="pg-status"></div>
+      <div id="summary-output" class="pg-result empty">
+        Summary will appear here
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 6: Translation (EN ↔ ZH)
+  ═══════════════════════════════════════════ -->
+  <div class="pg-panel" data-panel="translate">
+    <div class="pg-card">
+      <span class="model-badge" id="translate-model-badge"
+        >&#x1f917; Helsinki-NLP/opus-mt-en-zh</span
+      >
+      <div class="pg-section">
+        <label class="pg-label">
+          Direction:
+          <select
+            id="translate-dir"
+            onchange="updateTranslateDirection()"
+            style="
+              font-family: var(--sans);
+              font-size: 0.82rem;
+              padding: 0.3rem 0.5rem;
+              border: 1.5px solid var(--border);
+              border-radius: 6px;
+              background: var(--bg);
+              color: var(--text);
+              margin-left: 0.4rem;
+            "
+          >
+            <option value="en-zh">English → Chinese</option>
+            <option value="zh-en">Chinese → English</option>
+          </select>
+        </label>
+      </div>
+      <div class="pg-section">
+        <label class="pg-label" id="translate-src-label">English text</label>
+        <textarea
+          class="pg-textarea"
+          id="translate-input"
+          placeholder="Enter text to translate..."
+          rows="3"
+        ></textarea>
+        <div class="pg-examples" id="translate-examples">
+          <span class="pg-examples-label">Try an example:</span>
+          <button
+            class="pg-example-chip"
+            data-target="translate-input"
+            data-text="The quick brown fox jumps over the lazy dog."
+          >
+            Quick brown fox
+          </button>
+          <button
+            class="pg-example-chip"
+            data-target="translate-input"
+            data-text="Technology is reshaping the future of education around the world."
+          >
+            Tech in education
+          </button>
+        </div>
+      </div>
+      <button class="pg-btn" id="translate-btn" onclick="translateText()">
+        Translate
+      </button>
+      <div id="translate-status" class="pg-status"></div>
+      <div class="pg-section" style="margin-top: 1rem">
+        <label class="pg-label" id="translate-tgt-label"
+          >Chinese translation</label
+        >
+        <div id="translate-output" class="pg-result empty">
+          Translation will appear here
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  {% raw %}
+  (function () {
+    "use strict";
+
+    // ── Config ──
+    const WORKER_URL = "https://hf.kuibin.workers.dev";
+
+    const MODELS = {
+      text2img: "stabilityai/stable-diffusion-xl-base-1.0",
+      chat: "meta-llama/Llama-3.2-1B-Instruct",
+      vision: "google/vit-large-patch16-224",
+      sentiment: "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+      summarize: "facebook/bart-large-cnn",
+      translateEnZh: "Helsinki-NLP/opus-mt-en-zh",
+      translateZhEn: "Helsinki-NLP/opus-mt-zh-en",
+    };
+
+    // ── Tab Switching ──
+    const tabs = document.querySelectorAll(".pg-tab");
+    const panels = document.querySelectorAll(".pg-panel");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        panels.forEach((p) => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add("active");
+      });
+    });
+
+    // ── Example Chips — fill input on click ──
+    document.querySelectorAll(".pg-example-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const target = document.getElementById(chip.dataset.target);
+        if (!target) return;
+        target.value = chip.dataset.text;
+        target.focus();
+        target.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+    });
+
+    // ── Character Counter ──
+    window.updateCharCount = function (inputId, counterId, max) {
+      const len = document.getElementById(inputId).value.length;
+      const counter = document.getElementById(counterId);
+      counter.textContent = `${len.toLocaleString()} / ${max.toLocaleString()} characters`;
+      counter.classList.toggle("warn", len > max);
+    };
+
+    // ── Drag & Drop for Vision ──
+    const dropzone = document.getElementById("vision-dropzone");
+    ["dragenter", "dragover"].forEach((e) =>
+      dropzone.addEventListener(e, (ev) => { ev.preventDefault(); dropzone.classList.add("dragover"); })
+    );
+    ["dragleave", "drop"].forEach((e) =>
+      dropzone.addEventListener(e, () => dropzone.classList.remove("dragover"))
+    );
+    dropzone.addEventListener("drop", (ev) => {
+      ev.preventDefault();
+      const file = ev.dataTransfer.files[0];
+      if (file && file.type.startsWith("image/")) {
+        document.getElementById("vision-file").files = ev.dataTransfer.files;
+        handleVisionFile(document.getElementById("vision-file"));
+      }
+    });
+
+    // Clipboard paste — works anywhere on the page when vision panel is active
+    document.addEventListener("paste", (ev) => {
+      if (!document.querySelector('[data-panel="vision"].active')) return;
+      const items = ev.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          const fakeInput = { files: dt.files };
+          handleVisionFile(fakeInput);
+          break;
+        }
+      }
+    });
+
+    // ── API Helper ──
+    async function queryWorker(model, inputs, parameters, isBlob) {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model, inputs, parameters }),
+      });
+      if (!res.ok) {
+        let errMsg = `Error ${res.status}`;
+        try {
+          const errBody = await res.text();
+          const parsed = JSON.parse(errBody);
+          errMsg = parsed.error || parsed.message || errBody || errMsg;
+        } catch (_) {}
+        throw new Error(errMsg);
+      }
+      return isBlob ? res.blob() : res.json();
+    }
+
+    // Chat completion using OpenAI-compatible HF endpoint
+    async function queryWorkerChat(messages) {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODELS.chat, messages, type: "chat" }),
+      });
+      if (!res.ok) {
+        let errMsg = `Error ${res.status}`;
+        try {
+          const errBody = await res.text();
+          const parsed = JSON.parse(errBody);
+          errMsg = parsed.error || parsed.message || errBody || errMsg;
+        } catch (_) {}
+        throw new Error(errMsg);
+      }
+      const data = await res.json();
+      return data.choices[0].message.content;
+    }
+
+    async function queryWorkerRaw(model, binaryData) {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model,
+          inputs: Array.from(new Uint8Array(binaryData)),
+        }),
+      });
+      if (!res.ok) {
+        let errMsg = `Error ${res.status}`;
+        try { errMsg = (await res.json()).error || errMsg; } catch (_) {}
+        throw new Error(errMsg);
+      }
+      return res.json();
+    }
+
+    // ── Loading / Status helpers ──
+    function setLoading(btnId, statusId, loading, msg) {
+      const btn = document.getElementById(btnId);
+      const status = document.getElementById(statusId);
+      btn.disabled = loading;
+      if (loading) {
+        btn.dataset.origText = btn.innerHTML;
+        btn.innerHTML = '<span class="pg-spinner"></span> Processing...';
+        status.className = "pg-status";
+        status.textContent = msg || "Sending request to model...";
+      } else {
+        btn.innerHTML = btn.dataset.origText || btn.innerHTML;
+        // Don't clear status — let success/error messages persist
+      }
+    }
+
+    function showError(statusId, msg) {
+      const el = document.getElementById(statusId);
+      el.className = "pg-status error";
+      el.textContent = msg;
+    }
+
+    function showSuccess(statusId, msg) {
+      const el = document.getElementById(statusId);
+      el.className = "pg-status success";
+      el.textContent = msg;
+    }
+
+    function clearStatus(statusId) {
+      const el = document.getElementById(statusId);
+      el.className = "pg-status";
+      el.textContent = "";
+    }
+
+    // ── Sanitize text for safe HTML insertion ──
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ══════════════════════════════════════
+    // 1. TEXT-TO-IMAGE
+    // ══════════════════════════════════════
+    window.generateImage = async function () {
+      const prompt = document.getElementById("img-prompt").value.trim();
+      if (!prompt) return;
+      const output = document.getElementById("img-output");
+      output.innerHTML = "";
+      clearStatus("img-status");
+      setLoading("img-btn", "img-status", true, "Generating image... this may take 10–30s");
+
+      try {
+        const blob = await queryWorker(MODELS.text2img, prompt, {}, true);
+        const url = URL.createObjectURL(blob);
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "AI-generated image";
+        output.appendChild(img);
+        showSuccess("img-status", "Image generated successfully");
+      } catch (err) {
+        showError("img-status", "Failed: " + err.message);
+      } finally {
+        setLoading("img-btn", "img-status", false);
+      }
+    };
+
+    // ══════════════════════════════════════
+    // 2. AI CHAT
+    // ══════════════════════════════════════
+    let chatHistory = [];
+
+    window.clearChat = function () {
+      chatHistory = [];
+      const messagesEl = document.getElementById("chat-messages");
+      messagesEl.innerHTML = '<div class="chat-bubble assistant">Hello! I\'m a helpful AI assistant. Ask me anything.</div>';
+    };
+
+    window.sendChat = async function () {
+      const input = document.getElementById("chat-input");
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = "";
+
+      const messagesEl = document.getElementById("chat-messages");
+
+      // Add user bubble
+      const userBubble = document.createElement("div");
+      userBubble.className = "chat-bubble user";
+      userBubble.textContent = msg;
+      messagesEl.appendChild(userBubble);
+
+      // Add thinking bubble
+      const thinkBubble = document.createElement("div");
+      thinkBubble.className = "chat-bubble thinking";
+      thinkBubble.innerHTML = '<span class="pg-spinner"></span> Thinking...';
+      messagesEl.appendChild(thinkBubble);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      // Build conversation in OpenAI messages format
+      chatHistory.push({ role: "user", content: msg });
+
+      const systemPrompt = "You are a helpful, friendly AI assistant. Give concise but informative answers.";
+      const messages = [
+        { role: "system", content: systemPrompt },
+        ...chatHistory.slice(-12),
+      ];
+
+      const btn = document.getElementById("chat-btn");
+      btn.disabled = true;
+
+      try {
+        const reply = await queryWorkerChat(messages);
+        chatHistory.push({ role: "assistant", content: reply });
+
+        thinkBubble.className = "chat-bubble assistant";
+        thinkBubble.textContent = reply;
+      } catch (err) {
+        thinkBubble.className = "chat-bubble assistant";
+        thinkBubble.textContent = "Sorry, something went wrong: " + err.message;
+      } finally {
+        btn.disabled = false;
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        input.focus();
+      }
+    };
+
+    // ══════════════════════════════════════
+    // 3. IMAGE CLASSIFICATION
+    // ══════════════════════════════════════
+    let visionFileData = null;
+
+    window.handleVisionFile = function (input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      if (file.size > 4 * 1024 * 1024) {
+        showError("vision-status", "Image too large — please use an image under 4MB.");
+        return;
+      }
+
+      let preview = document.getElementById("vision-preview");
+      if (!preview) {
+        preview = document.createElement("img");
+        preview.id = "vision-preview";
+        preview.className = "pg-preview-img";
+        document.getElementById("vision-dropzone").insertAdjacentElement("afterend", preview);
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        visionFileData = e.target.result; // base64 data URL — HF accepts this directly
+        preview.src = visionFileData;
+        preview.style.display = "block";
+        document.getElementById("vision-url").value = "";
+        document.getElementById("vision-btn").disabled = false;
+        clearStatus("vision-status");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.handleVisionUrl = function (url) {
+      const trimmed = url.trim();
+      if (!trimmed) {
+        visionFileData = null;
+        document.getElementById("vision-btn").disabled = true;
+        const preview = document.getElementById("vision-preview");
+        if (preview) { preview.src = ""; preview.style.display = "none"; }
+        return;
+      }
+
+      let preview = document.getElementById("vision-preview");
+      if (!preview) {
+        preview = document.createElement("img");
+        preview.id = "vision-preview";
+        preview.className = "pg-preview-img";
+        document.getElementById("vision-dropzone").insertAdjacentElement("afterend", preview);
+      }
+      preview.onerror = () => {
+        showError("vision-status", "Could not load image — check the URL is a direct image link.");
+        document.getElementById("vision-btn").disabled = true;
+        visionFileData = null;
+      };
+      preview.onload = () => {
+        visionFileData = trimmed;
+        document.getElementById("vision-btn").disabled = false;
+        clearStatus("vision-status");
+      };
+      preview.src = trimmed;
+      preview.style.display = "block";
+    };
+
+    window.classifyImage = async function () {
+      if (!visionFileData) return;
+      const output = document.getElementById("vision-output");
+      output.innerHTML = "";
+      clearStatus("vision-status");
+      setLoading("vision-btn", "vision-status", true, "Classifying image...");
+
+      try {
+        const data = await queryWorker(MODELS.vision, visionFileData, {});
+        const results = Array.isArray(data) ? data : [data];
+        const top5 = results.slice(0, 5);
+
+        output.innerHTML = top5.map((r, i) => {
+          const pct = (r.score * 100).toFixed(1);
+          const delay = i * 100;
+          return `
+            <div class="classify-row">
+              <span class="classify-label" title="${escapeHtml(r.label)}">${escapeHtml(r.label)}</span>
+              <div class="classify-bar-track">
+                <div class="classify-bar-fill" style="width: 0%; transition-delay: ${delay}ms"
+                     data-width="${pct}%">${pct}%</div>
+              </div>
+            </div>`;
+        }).join("");
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            output.querySelectorAll(".classify-bar-fill").forEach((bar) => {
+              bar.style.width = bar.dataset.width;
+            });
+          });
+        });
+        showSuccess("vision-status", "Classification complete");
+      } catch (err) {
+        showError("vision-status", "Failed: " + err.message);
+      } finally {
+        setLoading("vision-btn", "vision-status", false);
+      }
+    };
+
+    // ══════════════════════════════════════
+    // 4. SENTIMENT ANALYSIS
+    // ══════════════════════════════════════
+    window.analyzeSentiment = async function () {
+      const text = document.getElementById("sentiment-input").value.trim();
+      if (!text) return;
+      const output = document.getElementById("sentiment-output");
+      output.innerHTML = "";
+      clearStatus("sentiment-status");
+      setLoading("sentiment-btn", "sentiment-status", true, "Analyzing sentiment...");
+
+      try {
+        const data = await queryWorker(MODELS.sentiment, text);
+        const results = Array.isArray(data[0]) ? data[0] : data;
+
+        output.innerHTML = results.map((r, i) => {
+          const pct = (r.score * 100).toFixed(1);
+          const label = r.label.toUpperCase();
+          const cls = label === "POSITIVE" ? "positive" : "negative";
+          const delay = i * 150;
+          return `
+            <div class="sentiment-row">
+              <span class="sentiment-label">${escapeHtml(label)}</span>
+              <div class="sentiment-bar-track">
+                <div class="sentiment-bar-fill ${cls}" style="width: 0%; transition-delay: ${delay}ms"
+                     data-width="${pct}%">${pct}%</div>
+              </div>
+            </div>`;
+        }).join("");
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            output.querySelectorAll(".sentiment-bar-fill").forEach((bar) => {
+              bar.style.width = bar.dataset.width;
+            });
+          });
+        });
+        showSuccess("sentiment-status", "Analysis complete");
+      } catch (err) {
+        showError("sentiment-status", "Failed: " + err.message);
+      } finally {
+        setLoading("sentiment-btn", "sentiment-status", false);
+      }
+    };
+
+    // ══════════════════════════════════════
+    // 5. SUMMARIZATION
+    // ══════════════════════════════════════
+    window.summarizeText = async function () {
+      const text = document.getElementById("summary-input").value.trim();
+      if (!text) return;
+
+      if (text.length < 50) {
+        showError("summary-status", "Please enter more text — the model needs at least a few sentences to summarize.");
+        return;
+      }
+
+      const output = document.getElementById("summary-output");
+      output.className = "pg-result empty";
+      output.textContent = "Summarizing...";
+      clearStatus("summary-status");
+      setLoading("summary-btn", "summary-status", true, "Generating summary...");
+
+      try {
+        const data = await queryWorker(MODELS.summarize, text, {
+          max_length: 150,
+          min_length: 30,
+        });
+        const summary = data[0]?.summary_text || "Could not generate summary.";
+        output.className = "pg-result";
+        output.textContent = summary;
+        showSuccess("summary-status", "Summary generated");
+      } catch (err) {
+        output.className = "pg-result empty";
+        output.textContent = "Summary will appear here";
+        showError("summary-status", "Failed: " + err.message);
+      } finally {
+        setLoading("summary-btn", "summary-status", false);
+      }
+    };
+
+    // ══════════════════════════════════════
+    // 6. TRANSLATION
+    // ══════════════════════════════════════
+    window.updateTranslateDirection = function () {
+      const dir = document.getElementById("translate-dir").value;
+      const srcLabel = document.getElementById("translate-src-label");
+      const tgtLabel = document.getElementById("translate-tgt-label");
+      const badge = document.getElementById("translate-model-badge");
+      const input = document.getElementById("translate-input");
+      const examples = document.getElementById("translate-examples");
+
+      if (dir === "en-zh") {
+        srcLabel.textContent = "English text";
+        tgtLabel.textContent = "Chinese translation";
+        badge.innerHTML = "&#x1f917; Helsinki-NLP/opus-mt-en-zh";
+        input.placeholder = "Enter English text to translate...";
+        examples.innerHTML = `
+          <span class="pg-examples-label">Try an example:</span>
+          <button class="pg-example-chip" data-target="translate-input" data-text="The quick brown fox jumps over the lazy dog.">Quick brown fox</button>
+          <button class="pg-example-chip" data-target="translate-input" data-text="Technology is reshaping the future of education around the world.">Tech in education</button>
+        `;
+      } else {
+        srcLabel.textContent = "Chinese text";
+        tgtLabel.textContent = "English translation";
+        badge.innerHTML = "&#x1f917; Helsinki-NLP/opus-mt-zh-en";
+        input.placeholder = "输入中文文本...";
+        examples.innerHTML = `
+          <span class="pg-examples-label">试试这些例子:</span>
+          <button class="pg-example-chip" data-target="translate-input" data-text="人工智能正在改变我们的生活方式。">AI 改变生活</button>
+          <button class="pg-example-chip" data-target="translate-input" data-text="今天的天气非常好，适合出去散步。">天气很好</button>
+        `;
+      }
+      // Re-bind example chips for new buttons
+      examples.querySelectorAll(".pg-example-chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const target = document.getElementById(chip.dataset.target);
+          if (!target) return;
+          target.value = chip.dataset.text;
+          target.focus();
+        });
+      });
+
+      const output = document.getElementById("translate-output");
+      output.className = "pg-result empty";
+      output.textContent = "Translation will appear here";
+      clearStatus("translate-status");
+    };
+
+    window.translateText = async function () {
+      const text = document.getElementById("translate-input").value.trim();
+      if (!text) return;
+      const dir = document.getElementById("translate-dir").value;
+      const model = dir === "en-zh" ? MODELS.translateEnZh : MODELS.translateZhEn;
+      const output = document.getElementById("translate-output");
+      output.className = "pg-result empty";
+      output.textContent = "Translating...";
+      clearStatus("translate-status");
+      setLoading("translate-btn", "translate-status", true, "Translating text...");
+
+      try {
+        const data = await queryWorker(model, text);
+        const translation = data[0]?.translation_text || "Could not translate.";
+        output.className = "pg-result";
+        output.textContent = translation;
+        showSuccess("translate-status", "Translation complete");
+      } catch (err) {
+        output.className = "pg-result empty";
+        output.textContent = "Translation will appear here";
+        showError("translate-status", "Failed: " + err.message);
+      } finally {
+        setLoading("translate-btn", "translate-status", false);
+      }
+    };
+
+  })();
+  {% endraw %}
+</script>
