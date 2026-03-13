@@ -86,14 +86,15 @@ compress_html: false
      Only one place to change if you add/remove tabs:
      adjust flex basis (33.333% = 3 per row) and min-width.
   ─────────────────────────────────────────────────── */
+
   .pg-tabs {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     border-bottom: 2px solid var(--border);
     margin-bottom: 1.5rem;
   }
+
   .pg-tab {
-    flex: 0 0 33.333%;        /* 3 per row → 2 rows of 3 */
     padding: 0.65rem 0.25rem;
     font-family: var(--sans);
     font-size: 0.75rem;
@@ -102,11 +103,12 @@ compress_html: false
     background: transparent;
     color: var(--muted);
     cursor: pointer;
-    white-space: nowrap;
+    white-space: normal;
     transition: color 0.2s, border-color 0.2s;
     border-bottom: 2.5px solid transparent;
     margin-bottom: -2px;
     display: flex;
+    text-align: center;
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
@@ -117,8 +119,7 @@ compress_html: false
 
   /* Wide: single row */
   @media (min-width: 760px) {
-    .pg-tabs { flex-wrap: nowrap; }
-    .pg-tab  { flex: 1; padding: 0.7rem 0.5rem; font-size: 0.78rem; }
+    .pg-tabs { grid-template-columns: repeat(6, 1fr); }
   }
 
   /* ── Panel Container ── */
