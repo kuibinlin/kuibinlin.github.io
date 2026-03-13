@@ -5,5 +5,5 @@ icon: fas fa-cubes
 order: 5
 ---
 
-> Attention Visualiser <br> [**Attention Visualiser**](http://127.0.0.1:4000/attention-visualiser/)
+> Attention Visualiser <br> [**Attention Visualiser**](http://linsnotes.com/attention-visualiser/)
 {: .prompt-info }
