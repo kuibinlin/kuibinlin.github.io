@@ -1,0 +1,1745 @@
+---
+layout: page
+title: How Transformers Pay Attention
+permalink: /attention-visualiser/
+---
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* ══════════════════════════════════════════════════════════════
+   ATTENTION VISUALIZER — STYLES
+   Inherits from Jekyll Chirpy theme via CSS custom properties.
+   Dark/light mode is handled entirely through these variables.
+══════════════════════════════════════════════════════════════ */
+
+  /* ── Root container ── */
+  #attn-edu {
+    /* Theme-aware colors — fallbacks for standalone use */
+    --bg: var(--main-bg, #faf8f4);
+    --surface: var(--card-bg, #ffffff);
+    --border: var(--border-color, #e0d9ce);
+    --text: var(--text-color, #1e1b16);
+    --muted: var(--label-color, #7a7265);
+    --accent: var(--link-color, #b5451b);
+    --accent2: #2a6496; /* Key vectors (blue) */
+    --accent3: #2d7a3a; /* Value vectors (green) */
+
+    /* Derived translucent shades — used for backgrounds, badges */
+    --accent-bg: rgba(181, 69, 27, 0.1);
+    --accent2-bg: rgba(42, 100, 150, 0.1);
+    --accent3-bg: rgba(45, 122, 58, 0.1);
+    --accent-bg2: rgba(181, 69, 27, 0.15);
+    --accent2-bg2: rgba(42, 100, 150, 0.15);
+    --accent3-bg2: rgba(45, 122, 58, 0.15);
+
+    /* Typography */
+    --mono: "JetBrains Mono", monospace;
+    --serif: "Lora", serif;
+    --sans: "Plus Jakarta Sans", sans-serif;
+
+    /* Shared geometry */
+    --radius: 8px;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+
+    font-family: var(--sans);
+    color: var(--text);
+    max-width: 1020px;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+  }
+
+  /* ── Dark-mode overrides ──
+   Chirpy toggles [data-mode="dark"] on <html>.
+   We adjust translucent shades and any remaining hardcoded values. */
+  [data-mode="dark"] #attn-edu {
+    --accent2: #5aa8d5;
+    --accent3: #4caf60;
+    --accent-bg: rgba(220, 120, 70, 0.14);
+    --accent2-bg: rgba(90, 168, 213, 0.14);
+    --accent3-bg: rgba(76, 175, 96, 0.14);
+    --accent-bg2: rgba(220, 120, 70, 0.2);
+    --accent2-bg2: rgba(90, 168, 213, 0.2);
+    --accent3-bg2: rgba(76, 175, 96, 0.2);
+  }
+
+  /* ── Header ── */
+  .edu-header {
+    text-align: center;
+    padding: 2.4rem 1rem 1.8rem;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .edu-header .kicker {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .edu-header h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .edu-header .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* ── Level toggle (Beginner / Expert) ── */
+  .level-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 0 auto 2rem;
+    width: fit-content;
+    border: 1.5px solid var(--border);
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .level-btn {
+    padding: 0.45rem 1.3rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .level-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 30px;
+  }
+
+  /* ── Progress steps (top breadcrumb) ── */
+  .step-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    padding: 0 0.5rem;
+  }
+  .step-pip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+  }
+  .step-pip-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: all 0.25s;
+    position: relative;
+    z-index: 1;
+  }
+  .step-pip.visited .step-pip-circle {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #fff;
+  }
+  .step-pip.active .step-pip-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 4px var(--accent-bg);
+  }
+  .step-pip-label {
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-align: center;
+    max-width: 68px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  .step-pip.active .step-pip-label {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .step-connector {
+    width: 36px;
+    height: 2px;
+    background: var(--border);
+    margin-bottom: 18px;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .step-connector.visited {
+    background: var(--accent3);
+  }
+
+  /* ── Two-column layout ── */
+  .edu-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .edu-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Stage panel (main content area) ── */
+  .stage-panel {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.6rem;
+    min-height: 380px;
+    animation: fadeSlideIn 0.3s ease;
+  }
+  .stage-title {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .stage-heading {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1.2rem;
+    color: var(--text);
+  }
+
+  /* ── Side panel ── */
+  .side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 80px;
+  }
+  .explain-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .explain-card .card-label {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .explain-beginner {
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .explain-expert {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* Analogy callout — theme-aware, no hardcoded colors */
+  .explain-beginner .analogy {
+    background: var(--accent-bg);
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 0.9rem;
+    border-radius: 0 5px 5px 0;
+    margin: 0.6rem 0;
+    font-style: italic;
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  /* Math block */
+  .math-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.6rem 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    margin: 0.6rem 0;
+    overflow-x: auto;
+    color: var(--accent2);
+  }
+  .math-block .comment {
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  /* ── Token chips ── */
+  .token-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .token-chip {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    padding: 0.38rem 0.75rem;
+    border-radius: 5px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    position: relative;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .token-chip .tok-idx {
+    position: absolute;
+    top: -8px;
+    right: -6px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.55rem;
+    font-family: var(--mono);
+    border-radius: 10px;
+    padding: 1px 5px;
+    font-weight: 600;
+  }
+  .token-chip.highlight-q {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+  }
+  .token-chip.highlight-k {
+    border-color: var(--accent2);
+    background: var(--accent2-bg);
+  }
+  .token-chip.highlight-v {
+    border-color: var(--accent3);
+    background: var(--accent3-bg);
+  }
+  .token-chip.dim {
+    opacity: 0.35;
+  }
+
+  /* ── Vector bar display ── */
+  .vec-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 0.8rem 0;
+  }
+  .vec-card {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    flex: 1;
+    min-width: 90px;
+  }
+  .vec-card .vec-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+  .vec-card.q-card .vec-label {
+    color: var(--accent);
+  }
+  .vec-card.k-card .vec-label {
+    color: var(--accent2);
+  }
+  .vec-card.v-card .vec-label {
+    color: var(--accent3);
+  }
+  .vec-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .vec-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .vec-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .vec-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  .vec-bar-val {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: var(--muted);
+    width: 32px;
+    text-align: right;
+  }
+
+  /* ── Score table ── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    margin: 0.8rem 0;
+  }
+  .score-table th {
+    text-align: left;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 0.3rem 0.6rem;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .score-table td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .score-table tr:last-child td {
+    border-bottom: none;
+  }
+  .score-table .score-bar-cell {
+    width: 100px;
+  }
+  .score-mini-bg {
+    height: 10px;
+    border-radius: 3px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .score-mini-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .score-table .hi {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .score-table .formula-col {
+    color: var(--accent2);
+    font-size: 0.72rem;
+  }
+
+  /* ── Attention heatmap ── */
+  .heatmap-wrap {
+    overflow-x: auto;
+    margin: 0.8rem 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .heatmap-table {
+    border-collapse: separate;
+    border-spacing: 3px;
+  }
+  .hm-cell {
+    width: 52px;
+    height: 44px;
+    border-radius: 5px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    vertical-align: middle;
+    cursor: pointer;
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+    position: relative;
+  }
+  .hm-cell:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    z-index: 5;
+  }
+  .hm-cell.hm-header {
+    background: transparent !important;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.72rem;
+    cursor: default;
+  }
+  .hm-cell.hm-header:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .hm-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    font-family: var(--mono);
+  }
+  .hm-legend-grad {
+    width: 80px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* ── Output step ── */
+  .output-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.4rem 0;
+    flex-wrap: wrap;
+  }
+  .output-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    width: 56px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .output-chip {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid;
+    opacity: 0.45;
+    transition:
+      opacity 0.4s,
+      transform 0.4s;
+  }
+  .output-chip.strong {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  .output-formula {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent2);
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.8rem;
+    background: var(--bg);
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  /* ── Navigation buttons ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    padding: 0.55rem 1.3rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .nav-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-btn.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .nav-btn.primary:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+  .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .step-counter {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* ── Floating tooltip ── */
+  .edu-tip {
+    position: fixed;
+    background: var(--text);
+    color: var(--surface);
+    padding: 0.4rem 0.75rem;
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+    transition: opacity 0.15s;
+    max-width: 220px;
+    white-space: normal;
+    line-height: 1.5;
+  }
+  .edu-tip.show {
+    opacity: 1;
+  }
+
+  /* ── Badges (Q / K / V labels) ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-right: 4px;
+  }
+  .badge-q {
+    background: var(--accent-bg2);
+    color: var(--accent);
+  }
+  .badge-k {
+    background: var(--accent2-bg2);
+    color: var(--accent2);
+  }
+  .badge-v {
+    background: var(--accent3-bg2);
+    color: var(--accent3);
+  }
+
+  /* ── Sentence display ── */
+  .sentence-display {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text);
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+  }
+
+  /* ── Footnote (dim helper text) ── */
+  .step-footnote {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    line-height: 1.6;
+  }
+
+  /* ── Animation ── */
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Mobile adjustments ── */
+  @media (max-width: 480px) {
+    .hm-cell {
+      width: 42px;
+      height: 36px;
+      font-size: 0.6rem;
+    }
+    .stage-panel {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<div id="attn-edu">
+  <!-- Header -->
+  <div class="edu-header">
+    <div class="kicker">Interactive Deep Learning</div>
+    <h1>How Transformers Pay Attention</h1>
+    <p class="subtitle">
+      A step-by-step walkthrough of the self-attention mechanism — the core idea
+      behind GPT, BERT, and every modern language model.
+    </p>
+  </div>
+
+  <!-- Level toggle -->
+  <div class="level-toggle">
+    <button
+      class="level-btn active"
+      id="btn-beginner"
+      onclick="AttnEdu.setLevel('beginner')"
+    >
+      🌱 Beginner
+    </button>
+    <button
+      class="level-btn"
+      id="btn-expert"
+      onclick="AttnEdu.setLevel('expert')"
+    >
+      ⚡ Expert
+    </button>
+  </div>
+
+  <!-- Step progress -->
+  <div class="step-progress" id="step-progress"></div>
+
+  <!-- Layout -->
+  <div class="edu-layout">
+    <div class="stage-panel" id="stage-panel"></div>
+    <div class="side-panel">
+      <div class="explain-card" id="explain-card">
+        <div class="card-label" id="explain-label">Explanation</div>
+        <div id="explain-body"></div>
+      </div>
+      <div class="explain-card" id="math-card" style="display: none">
+        <div class="card-label">The Math</div>
+        <div id="math-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tooltip (positioned fixed, outside layout) -->
+<div class="edu-tip" id="edu-tip"></div>
+
+<script>
+  /*  ═══════════════════════════════════════════════════════════════
+    ATTENTION VISUALIZER — MAIN SCRIPT
+    Self-contained in the AttnEdu namespace to avoid polluting
+    the global scope. All mutable state lives in `state`.
+    ═══════════════════════════════════════════════════════════════ */
+  const AttnEdu = (function () {
+    "use strict";
+
+    /* ────────────────────────────────────────────
+     § 1  DATA — curated sentence & pre-baked numbers
+     ──────────────────────────────────────────── */
+    const SENTENCE = "The bank can guarantee deposits";
+    const TOKENS = SENTENCE.split(" ");
+    const N = TOKENS.length; // 5
+    const D = 4; // embedding dimensionality (small for clarity)
+
+    /*  Pre-baked embeddings (d=4).
+      "bank" sits in an ambiguous region — financial vs. geographical.
+      Financial words ("guarantee", "deposits") cluster together in the
+      semantic dimensions (d₁, d₂) so the attention mechanism can pick
+      them out.
+      NOTE: real embeddings have hundreds of unlabelled dimensions;
+      we label 4 here (d₀–d₃) purely as a teaching convenience.       */
+    const E = [
+      [0.9, 0.1, 0.2, 0.3], // The        — function word, low semantic
+      [0.4, 0.8, 0.6, 0.5], // bank       ← ambiguous — mixed signal
+      [0.7, 0.2, 0.3, 0.8], // can        — auxiliary / function word
+      [0.2, 0.9, 0.8, 0.3], // guarantee  — strong financial semantic
+      [0.3, 0.7, 0.9, 0.6], // deposits   — strong financial semantic
+    ];
+
+    /*  Learned weight matrices (d×d).
+      Convention: Q_i = W^Q · e_i  (column-vector multiplication).
+      This is equivalent to the row-vector form Q_i = e_iᵀ · (W^Q)ᵀ
+      used in some textbooks. The maths is identical either way.
+
+      These matrices are designed so that Q and K emphasise the semantic
+      dimensions (d₁, d₂), causing "bank"'s query to match the keys of
+      financial-context words ("guarantee", "deposits") most strongly.   */
+    const WQ = [
+      [-0.3, 0.1, 0.2, 0.0],
+      [0.1, 1.3, -0.1, 0.2],
+      [0.2, -0.2, 1.2, 0.1],
+      [0.0, 0.3, 0.1, -0.2],
+    ];
+
+    const WK = [
+      [0.2, 0.3, -0.1, 0.0],
+      [0.1, 1.1, 0.3, -0.2],
+      [-0.1, 0.2, 1.0, 0.2],
+      [0.0, -0.1, 0.2, 0.3],
+    ];
+
+    const WV = [
+      [0.6, 0.2, 0.1, -0.1],
+      [0.1, 0.5, 0.3, 0.2],
+      [0.2, 0.1, 0.7, 0.1],
+      [-0.1, 0.3, 0.2, 0.6],
+    ];
+
+    /* ────────────────────────────────────────────
+     § 2  LINEAR ALGEBRA HELPERS
+     ──────────────────────────────────────────── */
+    function matVec(M, v) {
+      return M.map((row) => row.reduce((sum, w, j) => sum + w * v[j], 0));
+    }
+    function dot(a, b) {
+      return a.reduce((sum, x, i) => sum + x * b[i], 0);
+    }
+    function softmax(arr) {
+      const max = Math.max(...arr);
+      const exps = arr.map((x) => Math.exp(x - max)); // subtract max for numerical stability
+      const total = exps.reduce((a, b) => a + b, 0);
+      return exps.map((x) => x / total);
+    }
+    function fmt(x) {
+      return x.toFixed(3);
+    }
+    function fmt2(x) {
+      return x.toFixed(2);
+    }
+
+    /* ────────────────────────────────────────────
+     § 3  PRE-COMPUTE Q, K, V and attention
+     ──────────────────────────────────────────── */
+    const Qs = E.map((e) => matVec(WQ, e));
+    const Ks = E.map((e) => matVec(WK, e));
+    const Vs = E.map((e) => matVec(WV, e));
+
+    const FOCUS = 1; // "bank" — the word we focus on in steps 4-6
+    const scoresRaw = Ks.map((k) => dot(Qs[FOCUS], k) / Math.sqrt(D));
+    const attnWeights = softmax(scoresRaw);
+
+    // Full n×n attention matrix (all tokens → all tokens)
+    const FULL_ATTN = E.map((_, i) => {
+      const s = Ks.map((k) => dot(Qs[i], k) / Math.sqrt(D));
+      return softmax(s);
+    });
+
+    // Context-aware output for "bank" = Σ α_j · V_j
+    const OUTPUT_BANK = Vs[0].map((_, d) =>
+      Vs.reduce((sum, v, j) => sum + attnWeights[j] * v[d], 0),
+    );
+
+    /* ────────────────────────────────────────────
+     § 4  MUTABLE STATE
+     ──────────────────────────────────────────── */
+    const state = {
+      currentStep: 0,
+      highestVisited: 0, // tracks farthest step reached (for free back-navigation)
+      level: "beginner",
+    };
+
+    /* ────────────────────────────────────────────
+     § 5  COLOUR HELPERS
+     ──────────────────────────────────────────── */
+
+    /** Parse a CSS colour to [r,g,b].  Handles hex (#abc / #aabbcc)
+      and rgb(r,g,b) / rgba(r,g,b,a).  Falls back to the accent orange. */
+    function parseRGB(cssColor) {
+      if (!cssColor) return [181, 69, 27];
+      const s = cssColor.trim();
+      // Hex
+      if (s.startsWith("#")) {
+        let hex = s.slice(1);
+        if (hex.length === 3)
+          hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        return [
+          parseInt(hex.slice(0, 2), 16),
+          parseInt(hex.slice(2, 4), 16),
+          parseInt(hex.slice(4, 6), 16),
+        ];
+      }
+      // rgb / rgba
+      const m = s.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+      if (m) return [+m[1], +m[2], +m[3]];
+      return [181, 69, 27];
+    }
+
+    /** Resolve a CSS variable on #attn-edu and return [r,g,b]. */
+    function accentRGB(varName) {
+      const el = document.getElementById("attn-edu");
+      const val = getComputedStyle(el).getPropertyValue(varName || "--accent");
+      return parseRGB(val);
+    }
+
+    function heatColor(weight) {
+      const [r, g, b] = accentRGB("--accent");
+      return `rgba(${r},${g},${b},${(0.07 + weight * 0.88).toFixed(3)})`;
+    }
+    function heatTextColor(weight) {
+      return weight > 0.45 ? "#fff" : "var(--text)";
+    }
+
+    /* ────────────────────────────────────────────
+     § 6  STEP DEFINITIONS
+     ──────────────────────────────────────────── */
+    const STEPS = [
+      /* ── Step 0: Intro ── */
+      {
+        id: "intro",
+        shortLabel: "Intro",
+        label: "The Problem",
+        render: renderIntro,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>Language is <strong>context-dependent</strong>. The word <em>"bank"</em>
+            means something completely different in these two sentences:</p>
+            <div class="analogy">"I deposited money at the <strong>bank</strong>."<br>
+            vs. "We walked along the river <strong>bank</strong>."</div>
+            <p>Humans resolve this instantly by looking at surrounding words.
+            Transformers do the same thing using a mechanism called
+            <strong>self-attention</strong>.</p>
+            <p>We'll walk through exactly how, step by step.</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>Polysemous words require <strong>contextual disambiguation</strong>.
+            Static word embeddings (Word2Vec, GloVe) assign a single vector per word
+            regardless of context.</p>
+            <p>Self-attention solves this by computing a <strong>weighted mixture
+            of all token representations</strong>, where the weights are learned via
+            query-key compatibility. This produces context-sensitive embeddings —
+            the same word gets a different representation depending on its neighbours.</p>
+            <p>Complexity is <em>O(n²d)</em> per layer, replacing sequential recurrence
+            (RNNs) with fully parallelisable computation.</p>
+          </div>`,
+        },
+        math: null,
+      },
+
+      /* ── Step 1: Tokenise & Embed ── */
+      {
+        id: "tokens",
+        shortLabel: "Embed",
+        label: "Tokenise & Embed",
+        render: renderTokens,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>First, we split the sentence into <strong>tokens</strong>
+            (roughly words). Each token is turned into a list of numbers called
+            an <strong>embedding</strong> — a vector that captures its meaning.</p>
+            <div class="analogy">Think of GPS coordinates: instead of locating a
+            place in physical space, embeddings locate a word in <em>meaning
+            space</em>.</div>
+            <p>We use 4 numbers here for clarity. Real models use 512 to 4,096
+            dimensions.</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>Each token <em>x<sub>i</sub></em> is mapped to a dense vector
+            <strong>e<sub>i</sub> ∈ ℝ<sup>d</sup></strong> via a learned embedding
+            matrix <em>E ∈ ℝ<sup>|V|×d</sup></em>.</p>
+            <p>In practice, sinusoidal or learned <strong>positional encodings</strong>
+            are added to inject sequence order. We omit them here to focus on the
+            attention mechanism itself.</p>
+            <p>The dimension labels (d₀–d₃) are for readability only — real
+            embedding dimensions are not individually interpretable.</p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        e<sub>i</sub> = Embedding(token<sub>i</sub>) ∈ ℝ<sup>d</sup><br>
+        <span class="comment">// d = 4 here; real models use d = 512–4096</span>
+      </div>`,
+      },
+
+      /* ── Step 2: Q, K, V ── */
+      {
+        id: "qkv",
+        shortLabel: "Q K V",
+        label: "Create Q, K, V",
+        render: renderQKV,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>For each token, we create <strong>three vectors</strong> by
+            multiplying the embedding by three separate learned matrices:</p>
+            <p><span class="badge badge-q">Q</span><strong>Query</strong>
+            — "What am I looking for?"</p>
+            <p><span class="badge badge-k">K</span><strong>Key</strong>
+            — "What kind of information do I contain?"</p>
+            <p><span class="badge badge-v">V</span><strong>Value</strong>
+            — "What information should I pass along?"</p>
+            <div class="analogy">Imagine a library: your <em>query</em> is
+            your search term, each book's <em>key</em> is its catalogue entry,
+            and the book's <em>value</em> is its actual content. You compare
+            your search term against every catalogue entry to decide which books
+            to read.</div>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>Three separate linear projections create the Q, K, V
+            representations:</p>
+            <p><strong>Q<sub>i</sub> = W<sup>Q</sup> · e<sub>i</sub></strong> ,
+               <strong>K<sub>i</sub> = W<sup>K</sup> · e<sub>i</sub></strong> ,
+               <strong>V<sub>i</sub> = W<sup>V</sup> · e<sub>i</sub></strong></p>
+            <p>where W<sup>Q</sup>, W<sup>K</sup>, W<sup>V</sup> ∈ ℝ<sup>d×d<sub>k</sub></sup>
+            are learned during training.</p>
+            <p>In <strong>multi-head attention</strong>, each head learns its own
+            (W<sup>Q</sup>, W<sup>K</sup>, W<sup>V</sup>) — allowing different heads
+            to specialise (e.g. one head for syntax, another for coreference).
+            We show a single head with d = d<sub>k</sub> = 4.</p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        Q<sub>i</sub> = W<sup>Q</sup> · e<sub>i</sub><br>
+        K<sub>i</sub> = W<sup>K</sup> · e<sub>i</sub><br>
+        V<sub>i</sub> = W<sup>V</sup> · e<sub>i</sub><br>
+        <span class="comment">// W<sup>Q</sup>, W<sup>K</sup>, W<sup>V</sup> ∈ ℝ<sup>d×d</sup> — learned during training</span>
+      </div>`,
+      },
+
+      /* ── Step 3: Scores ── */
+      {
+        id: "scores",
+        shortLabel: "Scores",
+        label: "Compute Scores",
+        render: renderScores,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>Now we ask: <strong>how relevant is each word to "bank"?</strong></p>
+            <p>We compute a <em>dot product</em> between "bank"'s Query and every
+            word's Key. A dot product measures how much two vectors point in
+            the same direction — a higher value means higher relevance.</p>
+            <div class="analogy">It's like matching a search query against
+            catalogue entries: a high match score means "this book is relevant
+            to your search".</div>
+            <p>We divide by √d (here √4 = 2) to keep the numbers from getting
+            too large, which helps the model train more stably.</p>
+            <p>Notice <strong>"deposits"</strong> and <strong>"guarantee"</strong>
+            score highest — the model has learned that financial-context words are
+            most relevant for disambiguating "bank".</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>Attention logits are computed as the <strong>scaled dot product</strong>
+            between the query of the focus token and all keys:</p>
+            <p>score(i, j) = Q<sub>i</sub> · K<sub>j</sub><sup>T</sup> / √d<sub>k</sub></p>
+            <p>The <strong>√d<sub>k</sub> scaling</strong> prevents the dot products
+            from growing with dimensionality. Without it, large-magnitude logits push
+            softmax into near-one-hot regions where gradients vanish.</p>
+            <p>These raw logits are unbounded — the next step normalises them into
+            a valid probability distribution.</p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        score(i, j) = (Q<sub>i</sub> · K<sub>j</sub>) / √d<sub>k</sub><br><br>
+        √d<sub>k</sub> = √4 = 2.0<br>
+        <span class="comment">// scaling prevents softmax saturation → vanishing gradients</span>
+      </div>`,
+      },
+
+      /* ── Step 4: Softmax ── */
+      {
+        id: "softmax",
+        shortLabel: "Softmax",
+        label: "Softmax → Weights",
+        render: renderSoftmax,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>The raw scores can be any numbers — positive or negative.
+            <strong>Softmax</strong> converts them into percentages that add up
+            to 100%.</p>
+            <div class="analogy">Imagine ranking your friends by how much you
+            trust their restaurant picks. Softmax turns those rankings into
+            "I'll follow Alice 50% of the time, Bob 30%, Carol 20%."</div>
+            <p>These are now <strong>attention weights</strong> — they tell the
+            model exactly how much to "listen to" each word when building the
+            new meaning of "bank".</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>Softmax normalises the score vector into a valid probability
+            distribution:</p>
+            <p>α<sub>ij</sub> = exp(score<sub>j</sub>) / Σ<sub>k</sub> exp(score<sub>k</sub>)</p>
+            <p>The exponential amplifies differences — a slightly higher score
+            becomes significantly more dominant. This produces
+            <strong>approximately sparse</strong> attention in practice.</p>
+            <p>Alternatives: <em>sparsemax</em> and <em>entmax</em> produce truly
+            sparse distributions by projecting onto the simplex.</p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        α<sub>ij</sub> = exp(score<sub>j</sub>) / Σ<sub>k</sub> exp(score<sub>k</sub>)<br><br>
+        <span class="comment">// weights α sum to 1.0 across all j</span>
+      </div>`,
+      },
+
+      /* ── Step 5: Output ── */
+      {
+        id: "output",
+        shortLabel: "Output",
+        label: "Weighted Sum",
+        render: renderOutput,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>Finally, we <strong>mix the Value vectors</strong> using the
+            attention weights. Words with high attention contribute more.</p>
+            <div class="analogy">You're writing a report about "bank" by copying
+            from each relevant book, proportional to its relevance. "Deposits"
+            contributes the most — so the final result has a strongly financial
+            flavour.</div>
+            <p>The result is a <strong>new, context-aware vector for "bank"</strong>
+            that now "knows" it refers to a financial institution, not a river bank.</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>The output is a weighted sum of all Value vectors:</p>
+            <p><strong>output<sub>i</sub> = Σ<sub>j</sub> α<sub>ij</sub> · V<sub>j</sub></strong></p>
+            <p>This produces a new representation in ℝ<sup>d</sup> that blends
+            information from across the sequence.</p>
+            <p>In a full transformer, this feeds into a <strong>residual connection
+            + layer normalisation</strong>, then a position-wise feed-forward network
+            (FFN). This block is repeated L times.</p>
+            <p>Multi-head attention concatenates H such outputs:
+            <em>MultiHead = Concat(head₁ … head<sub>H</sub>) · W<sup>O</sup></em></p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        output<sub>i</sub> = Σ<sub>j</sub> α<sub>ij</sub> · V<sub>j</sub><br><br>
+        <span class="comment">// weighted sum of all Value vectors</span><br>
+        <span class="comment">// this replaces the original "bank" embedding</span>
+      </div>`,
+      },
+
+      /* ── Step 6: Full Map ── */
+      {
+        id: "fullmap",
+        shortLabel: "Full Map",
+        label: "Full Attention Map",
+        render: renderFullMap,
+        explain: {
+          beginner: `
+          <div class="explain-beginner">
+            <p>In reality, <strong>every word</strong> does this simultaneously.
+            Each word asks "which other words should I pay attention to?" and gets
+            its own context-aware representation.</p>
+            <p>The full <strong>attention matrix</strong> shows all these
+            relationships at once. Darker cells = more attention.</p>
+            <div class="analogy">Every word is simultaneously a student (asking
+            questions) and a teacher (answering questions from others) — all
+            in parallel.</div>
+            <p>🎉 <strong>You now understand self-attention</strong> — the core
+            mechanism that powers every modern language model.</p>
+          </div>`,
+          expert: `
+          <div class="explain-expert">
+            <p>The full attention matrix <strong>A ∈ ℝ<sup>n×n</sup></strong> is
+            computed in parallel — the key advantage over sequential RNNs.</p>
+            <p><strong>Complexity</strong>: <em>O(n²d)</em>, quadratic in sequence
+            length. Long-context models (100k+ tokens) use approximations: sparse
+            attention, linear attention (Performers), sliding-window (Longformer),
+            or Flash Attention (IO-aware exact attention).</p>
+            <p>Each <strong>row</strong> is a probability distribution; columns
+            show how much each token is "read" by others. Highly-attended columns
+            are information bottleneck tokens.</p>
+          </div>`,
+        },
+        math: `<div class="math-block">
+        A = softmax(Q K<sup>T</sup> / √d<sub>k</sub>)<br>
+        Output = A · V<br><br>
+        <span class="comment">// Q, K, V ∈ ℝ<sup>n×d</sup> — fully parallel</span>
+      </div>`,
+      },
+    ];
+
+    const TOTAL_STEPS = STEPS.length;
+
+    /* ────────────────────────────────────────────
+     § 7  RENDER — STEP FUNCTIONS
+     ──────────────────────────────────────────── */
+
+    function renderIntro(el) {
+      el.innerHTML = `
+      <div class="stage-title">Step 1 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">The Problem: Words Change Meaning</div>
+      <div class="sentence-display">"${SENTENCE}"</div>
+      <p style="font-size:.88rem;line-height:1.7;color:var(--muted)">
+        We'll trace through this sentence step by step. Our focus word is
+        <strong style="color:var(--accent)">"bank"</strong> — a word that
+        could mean a financial institution <em>or</em> a river bank. The
+        surrounding words <strong>"guarantee"</strong> and
+        <strong>"deposits"</strong> are the contextual clues.
+      </p>
+      <div style="margin-top:1.2rem">
+        <div style="font-size:.75rem;font-family:var(--mono);text-transform:uppercase;
+                     letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem">
+          The journey ahead
+        </div>
+        ${STEPS.map(
+          (s, i) => `
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem;
+                      opacity:${i === 0 ? 1 : 0.45}">
+            <div style="width:20px;height:20px;border-radius:50%;
+                        background:${i === 0 ? "var(--accent)" : "var(--border)"};
+                        color:${i === 0 ? "#fff" : "var(--muted)"};
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:.6rem;font-family:var(--mono);font-weight:600;
+                        flex-shrink:0">${i + 1}</div>
+            <span style="font-size:.82rem;color:var(--text)">${s.label}</span>
+          </div>`,
+        ).join("")}
+      </div>`;
+    }
+
+    function renderTokens(el) {
+      const DIM_LABELS = ["d₀", "d₁", "d₂", "d₃"];
+      const maxVal = Math.max(...E.flat().map(Math.abs));
+
+      el.innerHTML = `
+      <div class="stage-title">Step 2 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">Tokenise & Embed</div>
+      <div class="sentence-display">"${SENTENCE}"</div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:.6rem">
+        Each word becomes a vector of ${D} numbers:
+      </p>
+      <div class="token-row" id="tok-row-embed"></div>
+      <div class="vec-grid" id="vec-display"></div>
+      <p class="step-footnote">Click any token to inspect its embedding.</p>`;
+
+      const tokRow = el.querySelector("#tok-row-embed");
+      const vecDisplay = el.querySelector("#vec-display");
+
+      function showEmbed(i) {
+        tokRow
+          .querySelectorAll(".token-chip")
+          .forEach((c, j) => c.classList.toggle("highlight-q", j === i));
+        vecDisplay.innerHTML = `
+        <div class="vec-card q-card" style="flex:none;width:100%">
+          <div class="vec-label">e["${TOKENS[i]}"] — embedding vector</div>
+          <div class="vec-bars">
+            ${E[i]
+              .map(
+                (v, d) => `
+              <div class="vec-bar-row">
+                <span style="font-family:var(--mono);font-size:.62rem;color:var(--muted);width:24px">
+                  ${DIM_LABELS[d]}
+                </span>
+                <div class="vec-bar-bg">
+                  <div class="vec-bar-fill"
+                       style="width:${((Math.abs(v) / maxVal) * 100).toFixed(0)}%;
+                              background:var(--accent)"></div>
+                </div>
+                <span class="vec-bar-val">${fmt2(v)}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>`;
+      }
+
+      TOKENS.forEach((t, i) => {
+        const chip = document.createElement("div");
+        chip.className = "token-chip";
+        chip.innerHTML = `${t}<span class="tok-idx">${i}</span>`;
+        chip.addEventListener("click", () => showEmbed(i));
+        tokRow.appendChild(chip);
+      });
+      showEmbed(FOCUS); // default: "bank"
+    }
+
+    function renderQKV(el) {
+      const DIM_LABELS = ["d₀", "d₁", "d₂", "d₃"];
+      const allVals = [...Qs.flat(), ...Ks.flat(), ...Vs.flat()].map(Math.abs);
+      const maxV = Math.max(...allVals);
+
+      el.innerHTML = `
+      <div class="stage-title">Step 3 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">Create Queries, Keys & Values</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">
+        Showing <strong style="color:var(--accent)">"bank"</strong> (token ${FOCUS})
+        — click any token to compare:
+      </p>
+      <div class="token-row" id="tok-row-qkv"></div>
+      <div class="vec-grid" id="qkv-display"></div>`;
+
+      const tokRow = el.querySelector("#tok-row-qkv");
+      const qkvDisplay = el.querySelector("#qkv-display");
+
+      function vecCardHTML(label, vec, cls, varName) {
+        return `<div class="vec-card ${cls}">
+        <div class="vec-label">${label}</div>
+        <div class="vec-bars">
+          ${vec
+            .map(
+              (v, d) => `
+            <div class="vec-bar-row">
+              <span style="font-family:var(--mono);font-size:.62rem;color:var(--muted);
+                           width:18px">${DIM_LABELS[d]}</span>
+              <div class="vec-bar-bg">
+                <div class="vec-bar-fill"
+                     style="width:${((Math.abs(v) / maxV) * 100).toFixed(0)}%;
+                            background:var(${varName})"></div>
+              </div>
+              <span class="vec-bar-val">${fmt2(v)}</span>
+            </div>`,
+            )
+            .join("")}
+        </div>
+      </div>`;
+      }
+
+      function showQKV(i) {
+        tokRow
+          .querySelectorAll(".token-chip")
+          .forEach((c, j) => c.classList.toggle("highlight-q", j === i));
+        qkvDisplay.innerHTML =
+          vecCardHTML(
+            `Q["${TOKENS[i]}"] — Query`,
+            Qs[i],
+            "q-card",
+            "--accent",
+          ) +
+          vecCardHTML(`K["${TOKENS[i]}"] — Key`, Ks[i], "k-card", "--accent2") +
+          vecCardHTML(
+            `V["${TOKENS[i]}"] — Value`,
+            Vs[i],
+            "v-card",
+            "--accent3",
+          );
+      }
+
+      TOKENS.forEach((t, i) => {
+        const chip = document.createElement("div");
+        chip.className = "token-chip";
+        chip.innerHTML = `${t}<span class="tok-idx">${i}</span>`;
+        chip.addEventListener("click", () => showQKV(i));
+        tokRow.appendChild(chip);
+      });
+      showQKV(FOCUS);
+    }
+
+    function renderScores(el) {
+      const rawDots = Ks.map((k) => dot(Qs[FOCUS], k));
+      const minScore = Math.min(...scoresRaw);
+      const maxScore = Math.max(...scoresRaw);
+      const range = maxScore - minScore || 1; // avoid division by zero
+
+      el.innerHTML = `
+      <div class="stage-title">Step 4 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">Compute Attention Scores</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.6rem">
+        <span class="badge badge-q">Q</span><strong style="color:var(--accent)">"bank"</strong>
+        · <span class="badge badge-k">K</span>[each token] / √${D} = score
+      </p>
+      <table class="score-table">
+        <thead><tr>
+          <th>Token</th>
+          <th>Q · K<sup>T</sup></th>
+          <th>÷ √${D}</th>
+          <th class="score-bar-cell">Relevance</th>
+        </tr></thead>
+        <tbody id="score-tbody"></tbody>
+      </table>
+      <p class="step-footnote">
+        Higher score = more relevant to "bank". These are raw logits — the next
+        step converts them to percentages.
+      </p>`;
+
+      const tbody = el.querySelector("#score-tbody");
+      const bestIdx = scoresRaw.indexOf(maxScore);
+
+      TOKENS.forEach((t, j) => {
+        const pct = (((scoresRaw[j] - minScore) / range) * 100).toFixed(0);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <td><span class="badge badge-k"></span><strong>${t}</strong></td>
+        <td class="formula-col">${fmt(rawDots[j])}</td>
+        <td class="${j === bestIdx ? "hi" : ""}"><strong>${fmt(scoresRaw[j])}</strong></td>
+        <td class="score-bar-cell">
+          <div class="score-mini-bg">
+            <div class="score-mini-fill" style="width:${pct}%"></div>
+          </div>
+        </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderSoftmax(el) {
+      const expScores = scoresRaw.map((s) => Math.exp(s));
+      const expSum = expScores.reduce((a, b) => a + b, 0);
+      const bestIdx = attnWeights.indexOf(Math.max(...attnWeights));
+
+      el.innerHTML = `
+      <div class="stage-title">Step 5 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">Softmax → Attention Weights</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">
+        Raw scores → probability distribution (must sum to 1.0):
+      </p>
+      <table class="score-table">
+        <thead><tr>
+          <th>Token</th>
+          <th>Raw</th>
+          <th>exp(·)</th>
+          <th>Weight α</th>
+          <th>%</th>
+          <th class="score-bar-cell">Attention</th>
+        </tr></thead>
+        <tbody id="sm-tbody"></tbody>
+      </table>
+      <div id="sum-check" style="font-family:var(--mono);font-size:.75rem;
+           color:var(--accent3);margin-top:.5rem;padding:.4rem .6rem;
+           background:var(--bg);border-radius:4px;display:inline-block"></div>`;
+
+      const tbody = el.querySelector("#sm-tbody");
+
+      TOKENS.forEach((t, j) => {
+        const w = attnWeights[j];
+        const isBest = j === bestIdx;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <td><strong>${t}</strong></td>
+        <td class="formula-col">${fmt(scoresRaw[j])}</td>
+        <td class="formula-col">${fmt(expScores[j])}</td>
+        <td class="${isBest ? "hi" : ""}"><strong>${fmt(w)}</strong></td>
+        <td class="${isBest ? "hi" : ""}">${(w * 100).toFixed(1)}%</td>
+        <td class="score-bar-cell">
+          <div class="score-mini-bg">
+            <div class="score-mini-fill" style="width:${(w * 100).toFixed(1)}%"></div>
+          </div>
+        </td>`;
+        tbody.appendChild(tr);
+      });
+
+      const sumW = attnWeights.reduce((a, b) => a + b, 0);
+      el.querySelector("#sum-check").textContent =
+        `✓ Sum of weights = ${sumW.toFixed(4)} ≈ 1.0`;
+    }
+
+    function renderOutput(el) {
+      const WEIGHT_THRESHOLD = 0.18; // chips above this are visually emphasised
+
+      el.innerHTML = `
+      <div class="stage-title">Step 6 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">Weighted Sum → New Representation</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">
+        Each Value vector is scaled by its attention weight, then summed:
+      </p>
+      <div id="output-rows"></div>
+      <div class="output-formula">
+        output["bank"] = ${TOKENS.map(
+          (t, j) =>
+            `<span style="color:var(--accent)">${fmt(attnWeights[j])}</span>·V["${t}"]`,
+        ).join(" + ")}
+      </div>
+      <div style="font-size:.8rem;margin-top:.8rem">
+        <strong>Result</strong> — new context-aware embedding of "bank":
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+        ${OUTPUT_BANK.map(
+          (v, d) => `
+          <div style="font-family:var(--mono);font-size:.78rem;background:var(--bg);
+                      border:1.5px solid var(--accent);border-radius:5px;padding:.3rem .6rem">
+            d${d}: <strong style="color:var(--accent)">${fmt(v)}</strong>
+          </div>`,
+        ).join("")}
+      </div>
+      <p class="step-footnote">
+        This vector now encodes <strong>"bank" in a financial context</strong>
+        — the model has successfully disambiguated it using the surrounding words.
+      </p>`;
+
+      const rowsEl = el.querySelector("#output-rows");
+      TOKENS.forEach((t, j) => {
+        const w = attnWeights[j];
+        const row = document.createElement("div");
+        row.className = "output-row";
+        row.innerHTML = `
+        <div class="output-label">${fmt(w)}</div>
+        ${Vs[j]
+          .map(
+            (v) =>
+              `<div class="output-chip ${w > WEIGHT_THRESHOLD ? "strong" : ""}"
+                style="border-color:var(--accent);color:var(--accent)">
+            ${fmt2(v)}
+          </div>`,
+          )
+          .join("")}
+        <span style="font-size:.72rem;color:var(--muted);font-family:var(--mono)">
+          ← V["${t}"] × ${(w * 100).toFixed(1)}%
+        </span>`;
+        rowsEl.appendChild(row);
+      });
+    }
+
+    function renderFullMap(el) {
+      el.innerHTML = `
+      <div class="stage-title">Step 7 of ${TOTAL_STEPS}</div>
+      <div class="stage-heading">The Complete Attention Matrix</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">
+        Every token attending to every other token — hover a cell to inspect.
+        Rows = queries, columns = keys.
+      </p>
+      <div class="heatmap-wrap">
+        <table class="heatmap-table" id="hm-table"></table>
+      </div>
+      <div class="hm-legend">
+        <span>Low</span>
+        <canvas id="hm-legend-canvas" width="80" height="10" class="hm-legend-grad"></canvas>
+        <span>High attention</span>
+      </div>
+      <p class="step-footnote" style="margin-top:1rem">
+        🎉 <strong style="color:var(--text)">Congratulations!</strong> You now
+        understand self-attention — the mechanism at the heart of every modern
+        language model.
+      </p>`;
+
+      const table = el.querySelector("#hm-table");
+
+      // Header row (column labels)
+      const headTr = document.createElement("tr");
+      headTr.appendChild(makeHMCell("", true));
+      TOKENS.forEach((t) => {
+        const td = makeHMCell(t, true);
+        td.style.writingMode = "vertical-rl";
+        td.style.transform = "rotate(180deg)";
+        td.style.height = "64px";
+        td.style.verticalAlign = "bottom";
+        td.style.paddingBottom = "6px";
+        headTr.appendChild(td);
+      });
+      table.appendChild(headTr);
+
+      // Data rows
+      TOKENS.forEach((rowTok, i) => {
+        const tr = document.createElement("tr");
+        tr.appendChild(makeHMCell(rowTok, true));
+        TOKENS.forEach((colTok, j) => {
+          const w = FULL_ATTN[i][j];
+          const td = makeHMCell((w * 100).toFixed(0) + "%", false);
+          td.style.background = heatColor(w);
+          td.style.color = heatTextColor(w);
+          td.addEventListener("mouseenter", (e) =>
+            showTip(
+              e,
+              `${rowTok} → ${colTok}: ${(w * 100).toFixed(1)}% attention`,
+            ),
+          );
+          td.addEventListener("mouseleave", hideTip);
+          tr.appendChild(td);
+        });
+        table.appendChild(tr);
+      });
+
+      // Legend gradient
+      const canvas = el.querySelector("#hm-legend-canvas");
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        const [r, g, b] = accentRGB("--accent");
+        const grad = ctx.createLinearGradient(0, 0, 80, 0);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0.07)`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0.95)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 80, 10);
+      }
+    }
+
+    function makeHMCell(text, isHeader) {
+      const td = document.createElement("td");
+      td.className = "hm-cell" + (isHeader ? " hm-header" : "");
+      td.textContent = text;
+      return td;
+    }
+
+    /* ────────────────────────────────────────────
+     § 8  TOOLTIP
+     ──────────────────────────────────────────── */
+    function showTip(e, text) {
+      const tip = document.getElementById("edu-tip");
+      if (!tip) return;
+      tip.textContent = text;
+      tip.classList.add("show");
+      positionTip(e);
+    }
+    function hideTip() {
+      const tip = document.getElementById("edu-tip");
+      if (tip) tip.classList.remove("show");
+    }
+    function positionTip(e) {
+      const tip = document.getElementById("edu-tip");
+      if (!tip || !tip.classList.contains("show")) return;
+      tip.style.left = e.clientX + 14 + "px";
+      tip.style.top = e.clientY - 36 + "px";
+    }
+    document.addEventListener("mousemove", positionTip);
+
+    /* ────────────────────────────────────────────
+     § 9  RENDER ENGINE
+     ──────────────────────────────────────────── */
+
+    function updateProgress() {
+      const prog = document.getElementById("step-progress");
+      if (!prog) return;
+      prog.innerHTML = "";
+
+      STEPS.forEach((s, i) => {
+        // Connector line between pips
+        if (i > 0) {
+          const conn = document.createElement("div");
+          conn.className =
+            "step-connector" + (i <= state.highestVisited ? " visited" : "");
+          prog.appendChild(conn);
+        }
+
+        // Pip
+        const pip = document.createElement("div");
+        const isActive = i === state.currentStep;
+        const isVisited =
+          (i < state.currentStep || i <= state.highestVisited) && !isActive;
+
+        pip.className =
+          "step-pip" +
+          (isActive ? " active" : "") +
+          (isVisited ? " visited" : "");
+
+        pip.innerHTML = `
+        <div class="step-pip-circle">${isVisited && !isActive ? "✓" : i + 1}</div>
+        <div class="step-pip-label">${s.shortLabel}</div>`;
+
+        // Allow clicking any visited step or the next unvisited one
+        const canNavigate = i <= state.highestVisited + 1;
+        pip.style.cursor = canNavigate ? "pointer" : "default";
+        pip.style.opacity = canNavigate ? "1" : "0.5";
+        if (canNavigate) {
+          pip.addEventListener("click", () => goToStep(i));
+        }
+        prog.appendChild(pip);
+      });
+    }
+
+    function updateSidePanel() {
+      const step = STEPS[state.currentStep];
+
+      const explainLabel = document.getElementById("explain-label");
+      const explainBody = document.getElementById("explain-body");
+      const mathCard = document.getElementById("math-card");
+      const mathBody = document.getElementById("math-body");
+
+      if (explainLabel) {
+        explainLabel.textContent =
+          state.level === "beginner"
+            ? "🌱 Plain English"
+            : "⚡ Technical Detail";
+      }
+      if (explainBody) {
+        explainBody.innerHTML = step.explain[state.level];
+      }
+      if (mathCard && mathBody) {
+        if (step.math) {
+          mathCard.style.display = "";
+          mathBody.innerHTML = step.math;
+        } else {
+          mathCard.style.display = "none";
+        }
+      }
+    }
+
+    function updateNav() {
+      const panel = document.getElementById("stage-panel");
+      if (!panel) return;
+
+      let nav = panel.querySelector(".nav-row");
+      if (!nav) {
+        nav = document.createElement("div");
+        nav.className = "nav-row";
+        panel.appendChild(nav);
+      }
+
+      const isFirst = state.currentStep === 0;
+      const isLast = state.currentStep === TOTAL_STEPS - 1;
+
+      nav.innerHTML = `
+      <button class="nav-btn" ${isFirst ? "disabled" : ""}
+              onclick="AttnEdu.go(-1)">← Back</button>
+      <span class="step-counter">${state.currentStep + 1} / ${TOTAL_STEPS}</span>
+      <button class="nav-btn primary" ${isLast ? "disabled" : ""}
+              onclick="AttnEdu.go(1)">
+        ${isLast ? "✓ Complete" : "Next →"}
+      </button>`;
+    }
+
+    function render() {
+      updateProgress();
+
+      const panel = document.getElementById("stage-panel");
+      if (!panel) return;
+
+      // Trigger re-animation
+      panel.style.animation = "none";
+      panel.offsetHeight; // force reflow
+      panel.style.animation = "";
+
+      STEPS[state.currentStep].render(panel);
+      updateNav();
+      updateSidePanel();
+
+      // On mobile, scroll the stage into view
+      if (window.innerWidth < 780) {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    /* ────────────────────────────────────────────
+     § 10  PUBLIC API
+     ──────────────────────────────────────────── */
+
+    function goToStep(idx) {
+      if (idx < 0 || idx >= TOTAL_STEPS) return;
+      state.currentStep = idx;
+      if (idx > state.highestVisited) state.highestVisited = idx;
+      render();
+    }
+
+    function go(dir) {
+      goToStep(state.currentStep + dir);
+    }
+
+    function setLevel(l) {
+      state.level = l;
+      const btnB = document.getElementById("btn-beginner");
+      const btnE = document.getElementById("btn-expert");
+      if (btnB) btnB.classList.toggle("active", l === "beginner");
+      if (btnE) btnE.classList.toggle("active", l === "expert");
+      updateSidePanel();
+    }
+
+    /* ── Initialise ── */
+    render();
+
+    /* Expose only the methods needed by onclick handlers */
+    return { go, goToStep, setLevel };
+  })();
+</script>
