@@ -144,6 +144,7 @@ Create `assets/js/chart-renderer.js`:
   // --- Build Chart.js data from config ---
   function buildChartData(config, csvData) {
     if (csvData) {
+      // CSV source — map columns to labels/datasets
       var labels = csvData.rows.map(function (r) {
         return r[config.xAxis];
       });
@@ -161,6 +162,7 @@ Create `assets/js/chart-renderer.js`:
       return { labels: labels, datasets: datasets };
     }
 
+    // Inline data
     var data = config.data;
     return {
       labels: data.labels,
@@ -174,8 +176,14 @@ Create `assets/js/chart-renderer.js`:
   function renderChart(div, config, csvData) {
     var canvas = document.createElement("canvas");
     div.appendChild(canvas);
+
     var chartData = buildChartData(config, csvData);
-    var options = { responsive: true, plugins: {} };
+
+    var options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {},
+    };
 
     if (config.title) {
       options.plugins.title = { display: true, text: config.title };
@@ -224,14 +232,37 @@ Create `assets/js/chart-renderer.js`:
       }
     }
 
-    if (config) processChart(div, config);
+    if (config) {
+      processChart(div, config);
+    }
   }
 })();
 ```
 
 ---
 
-## Step 2 — Create the Liquid Tag Plugin
+## Step 2 — Add Responsive CSS
+
+Add this block to `assets/css/jekyll-theme-chirpy.scss` (after the existing custom styles):
+
+```scss
+// Chart.js responsive containers
+[data-chart] {
+  position: relative;
+  width: 100%;
+  height: 280px;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+}
+```
+
+This gives every chart container a fixed height — 280px on mobile, 400px on desktop. Combined with `maintainAspectRatio: false` in the renderer, Chart.js fills the container exactly without distortion.
+
+---
+
+## Step 3 — Create the Liquid Tag Plugin
 
 Create `_plugins/posts-chart-tag.rb`:
 
@@ -260,7 +291,7 @@ This converts `{% raw %}{% chart %}{% endraw %}` into `<div data-chart></div>` a
 
 ---
 
-## Step 3 — Edit the Metadata Hook
+## Step 4 — Edit the Metadata Hook
 
 Add this block to `_includes/metadata-hook.html`:
 
