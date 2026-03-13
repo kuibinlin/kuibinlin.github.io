@@ -9,28 +9,59 @@
 
 /* append your custom style below */
 
-// sidebar-right 'Recently Updated' use blue accent color
-#access-lastmod a:hover {
-  color: var(--toc-highlight) !important;
-  border-bottom: 1px solid var(--toc-highlight) !important;
+// ============================================================
+// Color Tokens — edit these to change title/subtitle colors
+// ============================================================
+$site-title-color-light: #062a61;
+$site-subtitle-color-light: #0969da;
+$site-title-color-dark: #f1f1f1;
+$site-subtitle-color-dark: #9fe7a7;
+
+// Override CSS custom properties per color scheme.
+// Mirrors Chirpy base logic so both system preference and
+// manual light/dark toggle are handled consistently.
+@media (prefers-color-scheme: light) {
+  html:not([data-mode]),
+  html[data-mode='light'] {
+    --site-title-color: #{$site-title-color-light};
+    --site-subtitle-color: #{$site-subtitle-color-light};
+  }
+
+  html[data-mode='dark'] {
+    --site-title-color: #{$site-title-color-dark};
+    --site-subtitle-color: #{$site-subtitle-color-dark};
+  }
 }
 
-// site title use blue accent color
-#sidebar .site-title {
-  color: #062a61 !important;
+@media (prefers-color-scheme: dark) {
+  html:not([data-mode]),
+  html[data-mode='dark'] {
+    --site-title-color: #{$site-title-color-dark};
+    --site-subtitle-color: #{$site-subtitle-color-dark};
+  }
+
+  html[data-mode='light'] {
+    --site-title-color: #{$site-title-color-light};
+    --site-subtitle-color: #{$site-subtitle-color-light};
+  }
 }
 
 // Subtitle effect text styling
 .site-subtitle {
-  color: #0969da !important;
   font-weight: 600 !important;
 }
 
 // Subtitle effect cursor styling
 .subtitle-cursor {
-  color: #0969da !important;
+  color: inherit;
   font-weight: 600 !important;
   font-size: 1.2em !important;
+}
+
+// sidebar-right 'Recently Updated' use blue accent color
+#access-lastmod a:hover {
+  color: var(--toc-highlight) !important;
+  border-bottom: 1px solid var(--toc-highlight) !important;
 }
 
 // Back-to-top progress circle bar use blue accent color
