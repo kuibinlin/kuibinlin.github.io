@@ -1,80 +1,36 @@
 ---
 ---
 
-@use "main
-{%- if jekyll.environment == " production " -%}
+@use 'main
+{%- if jekyll.environment == 'production' -%}
   .bundle
 {%- endif -%}
-";
+';
 
 /* append your custom style below */
-
-// Chart container — fixed height so Chart.js doesn't compress vertically on mobile
-[data-chart] {
-  position: relative;
-  height: 400px;
-
-  @media (max-width: 576px) {
-    height: 300px;
-  }
-}
-
-// ============================================================
-// Color Tokens — edit these to change title/subtitle colors
-// ============================================================
-$site-title-color-light: #062a61;
-$site-subtitle-color-light: #0969da;
-$site-title-color-dark: #f1f1f1;
-$site-subtitle-color-dark: #74b2f3;
-
-// Override CSS custom properties per color scheme.
-// Mirrors the pattern used in jekyll-theme-chirpy _base.scss so
-// the variables respond correctly to both system preference and
-// the manual light/dark toggle.
-@media (prefers-color-scheme: light) {
-  html:not([data-mode]),
-  html[data-mode="light"] {
-    --site-title-color: #{$site-title-color-light};
-    --site-subtitle-color: #{$site-subtitle-color-light};
-  }
-
-  html[data-mode="dark"] {
-    --site-title-color: #{$site-title-color-dark};
-    --site-subtitle-color: #{$site-subtitle-color-dark};
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-mode]),
-  html[data-mode="dark"] {
-    --site-title-color: #{$site-title-color-dark};
-    --site-subtitle-color: #{$site-subtitle-color-dark};
-  }
-
-  html[data-mode="light"] {
-    --site-title-color: #{$site-title-color-light};
-    --site-subtitle-color: #{$site-subtitle-color-light};
-  }
-}
-
-// Sidebar title — color comes from --site-title-color variable above
-// (no !important color override needed)
-
-// Subtitle effect text styling
-.site-subtitle {
-  font-weight: 600 !important;
-}
-
-// Subtitle effect cursor styling
-.subtitle-cursor {
-  font-weight: 600 !important;
-  font-size: 1.2em !important;
-}
 
 // sidebar-right 'Recently Updated' use blue accent color
 #access-lastmod a:hover {
   color: var(--toc-highlight) !important;
   border-bottom: 1px solid var(--toc-highlight) !important;
+}
+
+// site title use blue accent color
+#sidebar .site-title {
+  color: #062a61 !important;
+}
+
+// Subtitle effect text styling
+.site-subtitle {
+  color: #0969da !important;
+  font-weight: 600 !important;
+}
+
+// Subtitle effect cursor styling
+.subtitle-cursor {
+  color: #0969da !important;
+  font-weight: 600 !important;
+  font-size: 1.2em !important;
 }
 
 // Back-to-top progress circle bar use blue accent color
