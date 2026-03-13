@@ -64,6 +64,17 @@ $site-subtitle-color-dark: #74b2f3;
   border-bottom: 1px solid var(--toc-highlight) !important;
 }
 
+// Chart.js responsive containers
+[data-chart] {
+  position: relative;
+  width: 100%;
+  height: 280px;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+}
+
 // Back-to-top progress circle bar use blue accent color
 #progress-circle {
   margin: -1px -1px;
