@@ -18,6 +18,7 @@
 - type: popular-posts
   icon: "fas fa-fire" # icons powered by <https://fontawesome.com/>
   url: "/popular-posts/" # Fill with your popular posts page
+  noblank: true # open link in current tab
 
 # - type: googleform
 #   icon: "fas fa-paper-plane"
