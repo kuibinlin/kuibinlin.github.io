@@ -30,3 +30,5 @@ draft/
 
 # claude
 CLAUDE.md
+.claude/
+.agents/

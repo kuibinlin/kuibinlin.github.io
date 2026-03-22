@@ -22,24 +22,23 @@ tagline: Lin's random notes # it will display as the subtitle
 # Supported types: typewriter (typing effect) | decode (scramble/decrypt effect)
 # To disable: comment out the entire subtitle_effect block
 subtitle_effect:
-  type: decode                # choose: typewriter | decode
-  strings:                    # phrases to cycle through
+  type: decode # choose: typewriter | decode
+  strings: # phrases to cycle through
     - "Tinkerer"
     - "AI Engineer"
     - "Educator"
     - "Building AI that ships"
   # Shared options
-  backDelay: 2000             # ms — pause before switching to next phrase
-  startDelay: 500             # ms — delay before animation starts
+  backDelay: 2000 # ms — pause before switching to next phrase
+  startDelay: 500 # ms — delay before animation starts
   # Typewriter-only options
-  typeSpeed: 80               # ms — speed per character typed
-  backSpeed: 40               # ms — speed per character deleted
+  typeSpeed: 80 # ms — speed per character typed
+  backSpeed: 40 # ms — speed per character deleted
   # Decode-only options
-  decodeSpeed: 50             # ms — speed per scramble frame
-  decodeSpeed: 50       # decode only — ms per scramble frame
+  decodeSpeed: 50 # ms — speed per scramble frame
 
 description: >- # used by seo meta and the atom feed
-  Lin's Notes
+  A personal blog by Kuibin Lin covering homelab, Raspberry Pi, Docker, AI/ML, and self-hosted tools.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -63,12 +62,12 @@ social:
     # - https://twitter.com/username # change to your Twitter homepage
     - https://github.com/kuibinlin # change to your GitHub homepage
     # Uncomment below to add more social links
+    - https://www.linkedin.com/in/kuibinlin
     # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/kuibinlin
 
 # Site Verification Settings
 webmaster_verifications:
-  google: VQ5EAXFleCyZugEeH19j1apQM-9h0JzlrYBl5oliIxg # fill in your Google verification code
+  google: 96xKVPzxqSAZF-uTi5miPfeNq79AqHweNDrXfLlP9_M # fill in your Google verification code
   bing: # fill in your Bing verification code
   alexa: # fill in your Alexa verification code
   yandex: # fill in your Yandex verification code
@@ -83,12 +82,12 @@ webmaster_verifications:
 
 llms_txt:
   # Required
-  enabled: true                     # false or omitted = plugin does nothing
+  enabled: true # false or omitted = plugin does nothing
 
   # Optional — omit or leave empty to use defaults.
   # llms_txt `enabled` must be 'true' for these to apply.
-  full: true                        # generate llms-full.txt (default: false)
-  title: "linsnotes.com"            # default: site.title → "Site"
+  full: true # generate llms-full.txt (default: false)
+  title: "linsnotes.com" # default: site.title → "Site"
   description: "Kuibin Lin's personal blog, on raspberry pi, networking, homelab and AI"
 
   # Optional — extra links shown under "## Optional" section.
