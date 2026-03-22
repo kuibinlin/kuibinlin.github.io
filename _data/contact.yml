@@ -8,12 +8,16 @@
 #   url:  'https://www.datacamp.com/portfolio/kuibinlin'
 
 - type: linkedin
-  icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
-  url:  'https://www.linkedin.com/in/kuibinlin'                  # Fill with your Linkedin homepage
+  icon: "fab fa-linkedin" # icons powered by <https://fontawesome.com/>
+  url: "https://www.linkedin.com/in/kuibinlin" # Fill with your Linkedin homepage
 
 - type: email
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
+
+- type: popular-posts
+  icon: "fas fa-fire" # icons powered by <https://fontawesome.com/>
+  url: "https://www.linsnotes.com/popular" # Fill with your popular posts page
 
 # - type: googleform
 #   icon: "fas fa-paper-plane"
@@ -22,10 +26,10 @@
 # - type: twitter
 #  icon: "fa-brands fa-x-twitter"
 
-- type: rss
-  icon: "fas fa-rss"
-  noblank: false # open link in new tab
-  
+# - type: rss
+#   icon: "fas fa-rss"
+#   noblank: false # open link in new tab
+
 # Uncomment and complete the url below to enable more contact options
 #
 # - type: mastodon
