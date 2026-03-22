@@ -78,6 +78,20 @@ webmaster_verifications:
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
 
+# LLMs.txt Settings
+llms_txt:
+  enabled: true
+  full: true
+  title: "linsnotes.com"                          # optional, defaults to site.title
+  description: "Kuibin Lin's personal blog, on raspberry pi, networking, homelab and AI"    # optional, defaults to site.description
+  # others:                                 # optional, extra links section
+  #   - name: GitHub
+  #     url: https://github.com/yourname
+  #     description: Source code and projects
+  #   - name: RSS Feed
+  #     url: https://example.com/feed.xml
+  #     description: Subscribe via RSS
+
 # Web Analytics Settings
 analytics:
   google:
