@@ -3,9 +3,9 @@
 - type: github
   icon: "fab fa-github"
 
-- type: datacamp
-  icon: "fas fa-flag"
-  url:  'https://www.datacamp.com/portfolio/kuibinlin'
+# - type: datacamp
+#   icon: "fas fa-flag"
+#   url:  'https://www.datacamp.com/portfolio/kuibinlin'
 
 - type: linkedin
   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
@@ -22,9 +22,9 @@
 # - type: twitter
 #  icon: "fa-brands fa-x-twitter"
 
-# - type: rss
-#   icon: "fas fa-rss"
-#   noblank: true
+- type: rss
+  icon: "fas fa-rss"
+  noblank: false # open link in new tab
   
 # Uncomment and complete the url below to enable more contact options
 #

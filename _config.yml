@@ -24,9 +24,10 @@ tagline: Lin's random notes # it will display as the subtitle
 subtitle_effect:
   type: decode                # choose: typewriter | decode
   strings:                    # phrases to cycle through
-    - "AI Engineer based in Singapore"
-    - "Building AI that Ships"
-    - "Turning Ideas into Products"
+    - "Tinkerer"
+    - "AI Engineer"
+    - "Educator"
+    - "Building AI that ships from Singapore"
   # Shared options
   backDelay: 2000             # ms — pause before switching to next phrase
   startDelay: 500             # ms — delay before animation starts
