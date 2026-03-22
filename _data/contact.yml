@@ -17,7 +17,7 @@
 
 - type: popular-posts
   icon: "fas fa-fire" # icons powered by <https://fontawesome.com/>
-  url: "https://www.linsnotes.com/popular" # Fill with your popular posts page
+  url: "https://www.linsnotes.com/popular-posts" # Fill with your popular posts page
 
 # - type: googleform
 #   icon: "fas fa-paper-plane"
