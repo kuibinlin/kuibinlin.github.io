@@ -9,22 +9,31 @@
 #
 # ── _config.yml ──────────────────────────────────────────────────────
 #
-#   llms_txt:
-#
-#     # Required
-#     enabled: true                     # false or omitted = plugin does nothing
-#
-#     # Optional — omit or leave empty to use defaults
-#     full: true                        # generate llms-full.txt (default: false)
-#     title: "My Site"                  # default: site.title → "Site"
-#     description: "About my site"      # default: site.description → ""
-#
-#     # Optional — extra links shown under "## Others" section
-#     # Omit entirely if you have nothing to add.
-#     others:
-#       - name: API Docs
-#         url: https://example.com/api
-#         description: REST API reference   # optional per item
+#    llms_txt:
+#      # Required
+#      enabled: false                     # false or omitted = plugin does nothing
+
+#      # Optional — omit or leave empty to use defaults. llms_txt `enabled` must be 'true' to apply the following settings.
+
+#      full: true                        # optional, generate llms-full.txt (default: false).
+#      title: "My Site"                  # optional, default: site.title → "Site"
+#      description: "About my site"      # optional, default: site.description → ""
+
+#      # Optional — extra links shown under "## Others" section of llms.txt and llms-full.txt.
+#      # Omit or leave empty to skip this section. llms_txt `enabled` must be 'true' to apply the following settings.
+
+#      # others:
+#      #   - name: RSS Feed
+#      #     url: https://yourblog.com/feed.xml
+#      #     description: Subscribe to new posts
+
+#      #   - name: GitHub
+#      #     url: https://github.com/yourname
+#      #     description: Open source projects and code
+
+#      #   - name: Resume
+#      #     url: https://yourblog.com/resume.pdf
+#      #     description: Professional background and experience
 #
 # ─────────────────────────────────────────────────────────────────────
 #

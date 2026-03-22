@@ -78,19 +78,37 @@ webmaster_verifications:
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
 
-# LLMs.txt Settings
+# ------------ LLMs.txt settings › https://llmstxt.org/ ------------------
+# ↓ --------------------------
+
 llms_txt:
-  enabled: true
-  full: true
-  title: "linsnotes.com"                          # optional, defaults to site.title
-  description: "Kuibin Lin's personal blog, on raspberry pi, networking, homelab and AI"    # optional, defaults to site.description
-  # others:                                 # optional, extra links section
+  # Required
+  enabled: true                     # false or omitted = plugin does nothing
+
+  # Optional — omit or leave empty to use defaults. llms_txt `enabled` must be 'true' to apply the following settings.
+
+  full: true                        # optional, generate llms-full.txt (default: false).
+  title: "linsnotes.com"                  # optional, default: site.title → "Site"
+  description: "Kuibin Lin's personal blog, on raspberry pi, networking, homelab and AI"      # optional, default: site.description → ""
+
+  # Optional — extra links shown under "## Others" section of llms.txt and llms-full.txt.
+  # Omit or leave empty to skip this section. llms_txt `enabled` must be 'true' to apply the following settings.
+
+  # others:
+  #   - name: RSS Feed
+  #     url: https://yourblog.com/feed.xml
+  #     description: Subscribe to new posts
+
   #   - name: GitHub
   #     url: https://github.com/yourname
-  #     description: Source code and projects
-  #   - name: RSS Feed
-  #     url: https://example.com/feed.xml
-  #     description: Subscribe via RSS
+  #     description: Open source projects and code
+
+  #   - name: Resume
+  #     url: https://yourblog.com/resume.pdf
+  #     description: Professional background and experience
+
+# ↑ --------------------------
+# The end of LLMs.txt settings
 
 # Web Analytics Settings
 analytics:
