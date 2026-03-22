@@ -27,7 +27,7 @@ subtitle_effect:
     - "Tinkerer"
     - "AI Engineer"
     - "Educator"
-    - "Building AI that ships from Singapore"
+    - "Building AI that ships"
   # Shared options
   backDelay: 2000             # ms — pause before switching to next phrase
   startDelay: 500             # ms — delay before animation starts
