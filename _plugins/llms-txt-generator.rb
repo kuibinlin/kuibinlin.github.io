@@ -12,25 +12,23 @@
 #    llms_txt:
 #      # Required
 #      enabled: false                     # false or omitted = plugin does nothing
-
-#      # Optional — omit or leave empty to use defaults. llms_txt `enabled` must be 'true' to apply the following settings.
-
-#      full: true                        # optional, generate llms-full.txt (default: false).
-#      title: "My Site"                  # optional, default: site.title → "Site"
-#      description: "About my site"      # optional, default: site.description → ""
-
-#      # Optional — extra links shown under "## Others" section of llms.txt and llms-full.txt.
-#      # Omit or leave empty to skip this section. llms_txt `enabled` must be 'true' to apply the following settings.
-
-#      # others:
+#
+#      # Optional — omit or leave empty to use defaults.
+#      # llms_txt `enabled` must be 'true' for these to apply.
+#      full: true                        # generate llms-full.txt (default: false)
+#      title: "My Site"                  # default: site.title → "Site"
+#      description: "About my site"      # default: site.description → ""
+#
+#      # Optional — extra links shown under "## Optional" section.
+#      # Per the llmstxt.org spec, LLMs may skip this section when context is limited.
+#      # Omit or leave empty to skip this section.
+#      # optional:
 #      #   - name: RSS Feed
 #      #     url: https://yourblog.com/feed.xml
 #      #     description: Subscribe to new posts
-
 #      #   - name: GitHub
 #      #     url: https://github.com/yourname
 #      #     description: Open source projects and code
-
 #      #   - name: Resume
 #      #     url: https://yourblog.com/resume.pdf
 #      #     description: Professional background and experience
@@ -134,7 +132,7 @@ module Jekyll
       content << pages_section(site, pages) unless pages.empty?
       content << posts_section(site, posts) unless posts.empty?
       content << contacts_section(contacts) unless contacts.empty?
-      content << others_section(config)
+      content << optional_section(config)
 
       make_page(site, "llms.txt", content)
     end
@@ -168,7 +166,7 @@ module Jekyll
       end
 
       content << contacts_section(contacts) unless contacts.empty?
-      content << others_section(config)
+      content << optional_section(config)
 
       make_page(site, "llms-full.txt", content)
     end
@@ -215,11 +213,11 @@ module Jekyll
       out << "\n"
     end
 
-    def others_section(config)
-      extras = config["others"] || []
+    def optional_section(config)
+      extras = config["optional"] || []
       return "" if extras.empty?
 
-      out = String.new("## Others\n\n")
+      out = String.new("## Optional\n\n")
       extras.each do |item|
         out << "- [#{item['name']}](#{item['url']})"
         out << ": #{item['description']}" if item["description"]
