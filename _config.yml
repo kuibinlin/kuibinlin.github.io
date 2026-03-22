@@ -65,9 +65,10 @@ social:
     - https://www.linkedin.com/in/kuibinlin
     # - https://www.facebook.com/username
 
-# Site Verification Settings
+# Site Verification Settings. You can leave these empty if you are using DNS-based verification methods.
+# Using DNS-based verification for google, bing.
 webmaster_verifications:
-  google: 96xKVPzxqSAZF-uTi5miPfeNq79AqHweNDrXfLlP9_M # fill in your Google verification code
+  google: # fill in your Google verification code
   bing: # fill in your Bing verification code
   alexa: # fill in your Alexa verification code
   yandex: # fill in your Yandex verification code
@@ -108,7 +109,7 @@ llms_txt:
 # Web Analytics Settings
 analytics:
   google:
-    id: # fill in your Google Analytics ID
+    id: G-WCMPKF0K8Q # fill in your Google Analytics ID
   goatcounter:
     id: linsnotes # fill in your GoatCounter ID
   umami:
