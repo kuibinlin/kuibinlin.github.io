@@ -29,7 +29,7 @@ This guide will show you how to:
 * Configure WireGuard VPN on your GL.iNet router.
 * Set up a **guest network** to isolate untrusted devices.
 * Add **firewall rules** to prevent guests from accessing your home network.
-* *(Optional)* Allow guests to use your home DNS server securely over the VPN.
+* *(Optional)* Allow guests to use your [home DNS server](/posts/block-ads-on-every-device-in-your-home-network-with-pi-hole/) securely over the VPN.
 
 ---
 

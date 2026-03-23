@@ -43,7 +43,6 @@ A home VPN solves this. Once connected, your phone or laptop behaves as if it's 
 
 This is one of the biggest benefits of a home-hosted VPN: secure, private access to your entire home network from anywhere.
 
----
 
 ## Option 1: Use Your Router's Built-in VPN Server
 
@@ -53,7 +52,6 @@ If your router supports this, it's the simplest path. No extra device, no extra 
 
 However, not every router has this feature, and even those that do may have limited performance or configuration options. That's where PiVPN comes in.
 
----
 
 ## Option 2: Set Up PiVPN on a Raspberry Pi (or Any Mini PC)
 
@@ -139,7 +137,6 @@ Log into your router's admin page and set up a port forwarding rule:
 
 Now, when you connect to your home's public IP on port `51820`, the traffic will be forwarded to your Pi and into the VPN tunnel.
 
----
 
 ## Wrapping Up
 
