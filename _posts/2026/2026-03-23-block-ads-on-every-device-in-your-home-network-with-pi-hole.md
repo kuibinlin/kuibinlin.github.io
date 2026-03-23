@@ -80,6 +80,6 @@ This is especially handy when you're running multiple self-hosted services. Book
 
 ## Pi-hole + PiVPN: A Great Combo
 
-If you've already set up [PiVPN](/posts/2026-03-23-run-your-own-vpn-at-home-with-pivpn/), Pi-hole pairs with it nicely. During the PiVPN setup, you can point your VPN clients' DNS to your Pi-hole's local IP. That means even when you're away from home and connected through your VPN, all your DNS queries still go through Pi-hole. Ads and trackers get blocked on the go, just like at home.
+If you've already set up [PiVPN](/posts/run-your-own-vpn-at-home-with-pivpn/), Pi-hole pairs with it nicely. During the PiVPN setup, you can point your VPN clients' DNS to your Pi-hole's local IP. That means even when you're away from home and connected through your VPN, all your DNS queries still go through Pi-hole. Ads and trackers get blocked on the go, just like at home.
 
 Both can run on the same Raspberry Pi without any issues.
