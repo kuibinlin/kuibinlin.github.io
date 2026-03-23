@@ -94,8 +94,14 @@ SSH into your device
 
 Update the package list and upgrade installed packages:
 
-```
+```bash
 sudo apt update && sudo apt full-upgrade -y
+```
+
+(Optional) Reboot if any core packages were updated:
+
+```bash
+sudo reboot
 ```
 
 Run the PiVPN installer:
