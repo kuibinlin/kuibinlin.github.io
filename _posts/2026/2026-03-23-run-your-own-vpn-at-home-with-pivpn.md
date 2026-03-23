@@ -90,7 +90,15 @@ Use the Raspberry Pi Imager or Balena Etcher to write the image to your SD card.
 
 ### Step 2: Install PiVPN
 
-SSH into your device and run the one-line installer:
+SSH into your device
+
+Update the package list and upgrade installed packages:
+
+```
+sudo apt update && sudo apt full-upgrade -y
+```
+
+Run the PiVPN installer:
 
 ```bash
 curl -L https://install.pivpn.io | bash
