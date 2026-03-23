@@ -38,7 +38,7 @@ This guide will show you how to:
 * **GL.iNet Travel Router**
   *(e.g., GL.iNet Slate 7 (GL-BE3600): [product link](https://www.gl-inet.com/products/gl-be3600/)*)
 * A **home VPN server** running WireGuard
-  *(This guide assumes you host your own VPN. Not intended for commercial VPNs.)*
+  *(This guide assumes you host your own VPN. Not intended for commercial VPNs. See [Run Your Own VPN at Home with PiVPN](/posts/run-your-own-vpn-at-home-with-pivpn/) for a setup guide.)*
 * WireGuard client configuration that **allows LAN access and DNS routing**
 * *(Optional)* A **Pi-hole** or other DNS server running at home
 
