@@ -192,7 +192,7 @@ Example:
 * If you remove the allow rule, the block rule takes full effect.
 
 
-## ✅ Final Outcome
+## Final Outcome
 
 * ✅ A secure travel router that encrypts all traffic via your **home VPN**
 * ✅ A guest network that protects your trusted devices
