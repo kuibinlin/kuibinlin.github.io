@@ -1,6 +1,7 @@
 ---
 layout: post
 title: SSH Connections to Private GitLab and GitHub
+description: Secure your Git workflow with SSH key setup, RSA vs Ed25519, and managing multiple accounts for GitHub and GitLab.
 date: 2026-01-11 08:10:00 +0800
 published: true #false or true
 categories: github

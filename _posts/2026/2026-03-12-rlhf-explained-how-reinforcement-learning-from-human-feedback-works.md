@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "RLHF Explained: How Reinforcement Learning from Human Feedback Works"
+description: Understand the RLHF pipeline that transforms LLMs from next-word predictors into helpful assistants through human feedback.
 date: 2026-03-12 22:00:00 +0800
 media_subpath: /assets/media/2026/how-reinforcement-learning-from-human-feedback-works
 image: rlhf.png

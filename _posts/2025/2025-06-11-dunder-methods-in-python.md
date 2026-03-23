@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Dunder Methods in Python
+description: Master Python's dunder methods to make your custom classes work with built-in functions and operators.
 date: 2025-06-11 12:00:00 +0800
 published: true #false or true
 categories: python

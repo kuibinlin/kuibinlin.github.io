@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What Is Programming? Compiled vs Interpreted Languages – What Beginners Need to Know
+description: Learn the fundamentals of programming by comparing compiled and interpreted languages using beginner-friendly analogies.
 date: 2025-05-17 12:00:00 +0800
 published: true #false or true
 categories: programming

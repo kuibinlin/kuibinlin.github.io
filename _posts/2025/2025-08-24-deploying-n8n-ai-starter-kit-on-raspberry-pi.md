@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Deploying n8n AI Starter Kit on Raspberry Pi
+description: Deploy n8n AI Starter Kit on Raspberry Pi using Docker and Portainer with CPU-only Ollama support.
 date: 2025-08-24 18:00:00 +0800
 published: true #false or true
 categories: n8n

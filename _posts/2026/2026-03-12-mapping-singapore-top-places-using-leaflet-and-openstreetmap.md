@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Mapping Singapore’s Top Places Using Leaflet and OpenStreetMap
+description: Interactive map of Singapore’s top attractions including Marina Bay Sands, Changi Airport, and Gardens by the Bay.
 date: 2026-03-12 15:00:00 +0800
 published: true
 categories: website

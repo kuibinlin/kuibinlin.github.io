@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Add Interactive Maps to Jekyll Using Leaflet and OpenStreetMap
+description: Embed interactive Leaflet maps with OpenStreetMap in Jekyll using front matter config and a Liquid tag.
 date: 2026-03-12 18:00:00 +0800
 published: true
 categories: website

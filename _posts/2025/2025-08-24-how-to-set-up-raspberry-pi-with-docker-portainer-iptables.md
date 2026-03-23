@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Set Up Raspberry Pi with Docker, Portainer & iptables
+description: Set up Raspberry Pi as a Docker homelab server with Portainer management interface and iptables firewall rules.
 date: 2025-08-24 00:10:00 +0800
 published: true #false or true
 categories: raspberrypi

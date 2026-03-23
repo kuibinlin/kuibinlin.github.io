@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Safely Backup and Restore Nginx Proxy Manager in Docker
+description: Back up and restore Nginx Proxy Manager Docker containers with SSL certificates and configurations safely.
 date: 2025-08-24 00:20:00 +0800
 published: true #false or true
 categories: raspberrypi

@@ -1,5 +1,6 @@
 ---
 title: Simple Guide for Ubuntu/Debian Configuration
+description: Essential Ubuntu/Debian configuration guide covering firewall setup, SSH key generation, and sshd security.
 date: 2024-08-08 12:00:00 +0800
 categories: linux
 toc: true

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A Simple Guide to Using Git
+description: Beginner-friendly Git guide covering version control basics, branching, and collaborative workflows.
 date: 2024-11-02 12:30:00 +0800
 published: true #false or true
 categories: ML

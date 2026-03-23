@@ -1,5 +1,6 @@
 ---
 title: Understanding Email Protocols - POP, SMTP, and IMAP
+description: Learn the differences between POP, SMTP, and IMAP email protocols, plus mail agents like MTA, MDA, and MUA.
 date: 2024-04-28 09:00:00 +0800
 categories: linux
 toc: true

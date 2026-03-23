@@ -1,5 +1,6 @@
 ---
 title: Guide to creating an SSH alias on Windows
+description: Create SSH aliases on Windows to simplify connecting to remote servers without typing full credentials.
 date: 2024-04-19 11:33:00 +0800
 categories: linux
 toc: true

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Open WebUI Self-Hosted Setup Guide (Docker + Ollama + PostgreSQL on Ubuntu)
+description: Run Open WebUI on Ubuntu with Docker Compose, Ollama on host, and PostgreSQL backend for a self-hosted LLM interface.
 date: 2026-03-10 08:10:00 +0800
 published: true #false or true
 categories: local-llm

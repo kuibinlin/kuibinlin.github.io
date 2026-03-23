@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Machine Learning Algorithms Explained End-to-End Pipeline Guide
+description: Comprehensive guide to machine learning models in scikit-learn with beginner-friendly explanations and practical examples.
 date: 2025-09-27 00:10:00 +0800
 published: true #false or true
 categories: machine-learning

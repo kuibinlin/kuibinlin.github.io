@@ -1,5 +1,6 @@
 ---
 title: Sending Email from Raspberry Pi using MSMTP and MUTT
+description: Configure MSMTP and Mutt on Raspberry Pi to send system notification emails via Gmail's SMTP server.
 date: 2024-04-28 09:00:00 +0800
 categories: linux
 toc: true

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Setting Up Ruby, RubyGems, and Build-Essential for Jekyll
+description: Complete setup guide for Ruby, RubyGems, and build tools needed to run Jekyll on Linux for static site generation.
 date: 2024-11-05 12:30:00 +0800
 published: true #false or true
 categories: ML

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'if __name__ == "__main__" in Python'
+description: Learn how if __name__ == "__main__" runs code only when your Python script executes directly, not when imported.
 date: 2025-06-11 13:00:00 +0800
 published: true #false or true
 categories: python

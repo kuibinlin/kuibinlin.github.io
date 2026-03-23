@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A Beginner's Guide to Contributing on GitHub
+description: Learn open-source contribution basics through a community cookbook analogy, covering forks, pull requests, and workflows.
 date: 2026-01-11 08:10:00 +0800
 published: true #false or true
 categories: github

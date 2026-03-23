@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Python Logging Setup for Data Science and Machine Learning
+description: Configure Python logging properly for data science projects to control library noise and maintain consistent output.
 date: 2025-10-04 00:10:00 +0800
 published: true #false or true
 categories: machine-learning

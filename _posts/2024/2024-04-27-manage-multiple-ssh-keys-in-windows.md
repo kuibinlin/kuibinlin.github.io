@@ -1,5 +1,6 @@
 ---
 title: Manage Multiple SSH keys in Windows
+description: Configure Windows SSH to use different keys for different hosts, enabling seamless multi-server connections.
 date: 2024-04-27 13:00:00 +0800
 categories: linux
 toc: true

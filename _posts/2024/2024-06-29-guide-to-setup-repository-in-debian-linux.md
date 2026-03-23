@@ -1,5 +1,6 @@
 ---
 title: Guide to Setting Up a Repository in Debian Linux
+description: Step-by-step guide to adding custom package repositories in Debian Linux, including GPG key setup.
 date: 2024-06-29 12:00:00 +0800
 categories: linux
 toc: true

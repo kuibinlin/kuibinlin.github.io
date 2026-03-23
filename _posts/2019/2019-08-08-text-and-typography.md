@@ -1,5 +1,6 @@
 ---
 title: Text and Typography
+description: Comprehensive guide to Markdown syntax rendering and typography features in the Chirpy Jekyll theme.
 date: 2019-08-08 11:33:00 +0800
 authors: cotes
 categories: demo

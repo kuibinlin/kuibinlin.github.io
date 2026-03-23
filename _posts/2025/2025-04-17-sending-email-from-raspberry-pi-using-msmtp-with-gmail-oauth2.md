@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Sending Email from Raspberry Pi Using msmtp with Gmail OAuth 2.0 
+title: Sending Email from Raspberry Pi Using msmtp with Gmail OAuth 2.0
+description: Set up msmtp on Raspberry Pi to send emails via Gmail using OAuth 2.0 instead of deprecated app passwords.
 date: 2025-04-17 07:00:00 +0800
 published: true #false or true
 categories: linux

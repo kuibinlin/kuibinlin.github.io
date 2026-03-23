@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Setting up a Travel Router with VPN Back to Your Home Network
+description: Configure GL.iNet travel router with WireGuard VPN to securely route traffic through your home network while travelling.
 date: 2025-05-11 12:00:00 +0800
 published: true #false or true
 categories: router

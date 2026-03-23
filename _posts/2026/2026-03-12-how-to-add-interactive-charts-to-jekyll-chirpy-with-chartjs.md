@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Add Interactive Charts to Jekyll Chirpy with Chart.js
+description: Add interactive Chart.js visualizations to Jekyll Chirpy with CSV data or inline config for line, bar, and doughnut charts.
 date: 2026-03-12 23:00:00 +0800
 media_subpath: /assets/media/2026/how-to-add-interactive-charts-to-jekyll-chirpy-with-chartjs
 image: chartjs.png

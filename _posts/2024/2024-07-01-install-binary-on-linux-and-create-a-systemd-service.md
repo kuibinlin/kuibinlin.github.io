@@ -1,5 +1,6 @@
 ---
 title: Guide to Install a Binary on Linux and Create a Systemd Service
+description: Download, install Linux binaries, and create systemd services to manage them automatically. Example uses Cloudflared.
 date: 2024-07-01 12:00:00 +0800
 categories: linux
 toc: true

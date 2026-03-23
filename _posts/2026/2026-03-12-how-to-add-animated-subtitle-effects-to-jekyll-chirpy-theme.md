@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Add Animated Subtitle Effects to Jekyll Chirpy Theme
+description: Add typewriter and decode animation effects to Chirpy theme subtitles with extensible registry pattern.
 date: 2026-03-12 21:00:00 +0800
 published: true
 media_subpath: /assets/media/2026/how-to-add-animated-subtitle-effects-to-jekyll-chirpy-theme/

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Implementing Version Control for Dot Files using Symbolic Links
+description: Manage your Linux dotfiles with version control using git and symbolic links for easy configuration syncing.
 date: 2024-04-14 12:30:00 +0800
 published: true #false or true
 categories: linux

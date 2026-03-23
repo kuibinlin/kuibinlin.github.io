@@ -1,5 +1,6 @@
 ---
 title: Securing SSHD on Debian-based Linux Systems
+description: Harden SSH security on Debian Linux by adding sudo users, generating key pairs, and implementing secure authentication.
 date: 2024-04-27 12:00:00 +0800
 categories: linux
 toc: true

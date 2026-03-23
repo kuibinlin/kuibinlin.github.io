@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'Full custom HTML page with GoatCounter'
+description: Create standalone HTML pages in Jekyll with custom CSS/JS while preserving GoatCounter analytics tracking.
 date: 2025-08-10 13:00:00 +0800
 published: true #false or true
 categories: jekyll

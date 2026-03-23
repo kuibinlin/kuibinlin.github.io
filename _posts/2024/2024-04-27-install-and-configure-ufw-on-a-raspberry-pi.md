@@ -1,5 +1,6 @@
 ---
-title: Install and Configure UFW on a Raspberry Pi 
+title: Install and Configure UFW on a Raspberry Pi
+description: Set up UFW firewall on Raspberry Pi with practical rules to secure SSH and control network traffic.
 date: 2024-04-27 19:00:00 +0800
 categories: linux
 toc: true

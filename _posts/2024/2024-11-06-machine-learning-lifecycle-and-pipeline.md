@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Machine Learning Lifecycle and Pipeline
+description: Overview of the ML lifecycle stages from problem definition through model deployment, including data preprocessing.
 date: 2024-11-06 12:30:00 +0800
 published: true #false or true
 categories: ML

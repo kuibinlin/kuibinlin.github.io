@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fixing Push and Pull Errors - Behind Tips, Reconciling Divergent Branches
+description: Troubleshoot common Git push/pull errors and learn how to reconcile divergent branches with merge, rebase, or fast-forward.
 date: 2024-11-04 12:30:00 +0800
 published: true #false or true
 categories: ML
