@@ -29,18 +29,18 @@ This guide will show you how to:
 * Configure WireGuard VPN on your GL.iNet router.
 * Set up a **guest network** to isolate untrusted devices.
 * Add **firewall rules** to prevent guests from accessing your home network.
-* *(Optional)* Allow guests to use your [home DNS server](/posts/block-ads-on-every-device-in-your-home-network-with-pi-hole/) securely over the VPN.
+* *(Optional)* Allow guests to use your home DNS server securely over the VPN.
 
 ---
 
 ## **What You'll Need**
 
 * **GL.iNet Travel Router**
-  *(e.g., GL.iNet Slate 7 (GL-BE3600): [product link](https://www.gl-inet.com/products/gl-be3600/)*)
+  *(e.g., GL.iNet Slate 7 (GL-BE3600): [**product link**](https://www.gl-inet.com/products/gl-be3600/)*)
 * A **home VPN server** running WireGuard
-  *(This guide assumes you host your own VPN. Not intended for commercial VPNs. See [Run Your Own VPN at Home with PiVPN](/posts/run-your-own-vpn-at-home-with-pivpn/) for a setup guide.)*
+  *(This guide assumes you host your own VPN. Not intended for commercial VPNs. See [**Run Your Own VPN at Home with PiVPN**](/posts/run-your-own-vpn-at-home-with-pivpn/) for a setup guide.)*
 * WireGuard client configuration that **allows LAN access and DNS routing**
-* *(Optional)* A **Pi-hole** or other DNS server running at home
+* *(Optional)* A [**Pi-hole**](/posts/block-ads-on-every-device-in-your-home-network-with-pi-hole/) or other DNS server running at home
 
 ---
 
