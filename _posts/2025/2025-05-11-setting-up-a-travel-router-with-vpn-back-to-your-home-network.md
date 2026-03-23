@@ -22,7 +22,6 @@ Some countries also restrict access to websites like Google, YouTube, or social 
 
 If you also run a **Pi-hole DNS server at home**, you can route all DNS queries through it to block ads, trackers, and log DNS usage — further increasing privacy.
 
----
 
 This guide will show you how to:
 
@@ -31,7 +30,6 @@ This guide will show you how to:
 * Add **firewall rules** to prevent guests from accessing your home network.
 * *(Optional)* Allow guests to use your home DNS server securely over the VPN.
 
----
 
 ## **What You'll Need**
 
@@ -40,9 +38,8 @@ This guide will show you how to:
 * A **home VPN server** running WireGuard
   *(This guide assumes you host your own VPN. Not intended for commercial VPNs. See [**Run Your Own VPN at Home with PiVPN**](/posts/run-your-own-vpn-at-home-with-pivpn/) for a setup guide.)*
 * WireGuard client configuration that **allows LAN access and DNS routing**
-* *(Optional)* A [**Pi-hole**](/posts/block-ads-on-every-device-in-your-home-network-with-pi-hole/) or other DNS server running at home
+* *(Optional)* A **Pi-hole** or other DNS server running at home. See [**Block Ads on Every Device in Your Home Network with Pi-hole**](/posts/block-ads-on-every-device-in-your-home-network-with-pi-hole/) for a setup guide.
 
----
 
 ## **Step 1: Set Up WireGuard VPN Client on the GL.iNet Router**
 
@@ -52,7 +49,6 @@ Securely route all internet traffic through your **home network** — so your co
 
 > Example: If you’re in a hotel in China, but your VPN server is in the UK, using the VPN allows you to access YouTube, Gmail, or any content restricted locally.
 
----
 
 ### Instructions:
 
@@ -82,7 +78,6 @@ AllowedIPs = 0.0.0.0/0, ::0/0
 
 Now all devices connected to the GL.iNet router will tunnel their internet traffic securely through your home.
 
----
 
 ### Optional: Set the Physical Toggle Switch for VPN
 
@@ -91,7 +86,6 @@ Now all devices connected to the GL.iNet router will tunnel their internet traff
 
 This allows quick VPN control via a physical switch on the router.
 
----
 
 ## **Step 2: Enable the Guest Network (Highly Recommended)**
 
@@ -99,7 +93,6 @@ This allows quick VPN control via a physical switch on the router.
 
 Isolate less secure or guest devices from your own — such as family phones, smart TVs, or IoT devices.
 
----
 
 ### Instructions:
 
@@ -109,21 +102,17 @@ Isolate less secure or guest devices from your own — such as family phones, sm
 
 > **Why this is important:** Devices on the guest network cannot see each other or access the router interface. This prevents accidental or malicious access to your own devices.
 
----
-
 ## **Step 3: Block Guest Clients from Accessing Your Home Network via VPN**
 
 ### Problem:
 
 Even though guests are isolated locally, traffic from the guest network **still goes through the VPN** — meaning they could access your home LAN (e.g., `192.168.x.x`, `10.x.x.x`, `172.16.x.x`) if not blocked.
 
----
 
 ### Solution:
 
 Use a firewall rule to block all guest traffic going to common private IP ranges via VPN.
 
----
 
 ### Instructions (in LuCI interface):
 
@@ -147,7 +136,6 @@ Click **Save & Apply**.
 
 > **Why this is important:** This ensures guest devices can access the internet via the VPN, but not your home network — protecting your NAS, printers, or internal services.
 
----
 
 ## **Step 4: *(Optional)* Allow Guest Access to Your Home DNS Server (Pi-hole)**
 
@@ -155,7 +143,6 @@ Click **Save & Apply**.
 
 You want guest devices to use your **home DNS server** (e.g., Pi-hole) for DNS filtering and logging, rather than public DNS (e.g., Google or Cloudflare).
 
----
 
 ### (A): Edit the Default GL.iNet DNS Forwarding Rules
 
@@ -171,7 +158,6 @@ You want guest devices to use your **home DNS server** (e.g., Pi-hole) for DNS f
    | **Internal IP address** | `192.168.1.x` (your Pi-hole) |
    | **Internal port**       | `53`                         |
 
----
 
 ### (B): Add a Traffic Rule to Allow Guest DNS
 
@@ -194,7 +180,6 @@ Click **Save & Apply**.
 
 > **Why this is useful:** This ensures guest clients can use your home DNS server for name resolution — without giving them access to anything else in your home network.
 
----
 
 ### **Understanding Firewall Rule Order**
 
@@ -206,7 +191,6 @@ Example:
 * A rule that allows DNS to `192.168.1.80:53` will **override** a broader block to `192.168.0.0/16`.
 * If you remove the allow rule, the block rule takes full effect.
 
----
 
 ## ✅ Final Outcome
 
