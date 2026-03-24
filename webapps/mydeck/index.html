@@ -491,6 +491,9 @@ permalink: /mydeck/
       font-weight: 600;
       margin-bottom: 16px;
       cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
     }
 
     /* Responsive */
@@ -599,7 +602,7 @@ permalink: /mydeck/
   <div id="view-fc-list" class="view">
     <div class="container">
       <div class="section-header">
-        <a class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</a>
+        <button class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</button>
         <button class="btn btn-primary btn-small" onclick="navigate('fc-edit')">
           <i class="fas fa-plus"></i> Create Flashcards
         </button>
@@ -618,7 +621,7 @@ permalink: /mydeck/
   <div id="view-ch-list" class="view">
     <div class="container">
       <div class="section-header">
-        <a class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</a>
+        <button class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</button>
         <button class="btn btn-primary btn-small" onclick="navigate('ch-edit')">
           <i class="fas fa-plus"></i> Create Challenge
         </button>
@@ -636,7 +639,7 @@ permalink: /mydeck/
   <!-- Flashcard Study View -->
   <div id="view-fc-study" class="view">
     <div class="container">
-      <a class="back-link" onclick="navigate('fc-list')"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="back-link" onclick="navigate('fc-list')"><i class="fas fa-arrow-left"></i> Back</button>
       <h2 id="fcStudyTitle"></h2>
       <div class="study-progress" id="fcProgress"></div>
       <div class="progress-bar"><div class="progress-fill" id="fcProgressBar"></div></div>
@@ -663,7 +666,7 @@ permalink: /mydeck/
   <!-- Flashcard Edit View -->
   <div id="view-fc-edit" class="view">
     <div class="container">
-      <a class="back-link" onclick="navigate('fc-list')"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="back-link" onclick="navigate('fc-list')"><i class="fas fa-arrow-left"></i> Back</button>
       <h2 id="fcEditTitle">Create Flashcards</h2>
       <div id="fcEditMsg"></div>
       <div class="card">
@@ -724,7 +727,7 @@ permalink: /mydeck/
   <!-- Challenge Play View -->
   <div id="view-ch-play" class="view">
     <div class="container">
-      <a class="back-link" onclick="navigate('ch-list')"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="back-link" onclick="navigate('ch-list')"><i class="fas fa-arrow-left"></i> Back</button>
       <h2 id="chPlayTitle"></h2>
       <div class="study-progress" id="chProgress"></div>
       <div class="progress-bar"><div class="progress-fill" id="chProgressBar"></div></div>
@@ -736,7 +739,7 @@ permalink: /mydeck/
   <!-- Challenge Edit View -->
   <div id="view-ch-edit" class="view">
     <div class="container">
-      <a class="back-link" onclick="navigate('ch-list')"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="back-link" onclick="navigate('ch-list')"><i class="fas fa-arrow-left"></i> Back</button>
       <h2 id="chEditTitle">Create Challenge</h2>
       <div id="chEditMsg"></div>
       <div class="card">
@@ -806,7 +809,7 @@ permalink: /mydeck/
   <!-- Leaderboard View -->
   <div id="view-leaderboard" class="view">
     <div class="container">
-      <a class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="back-link" onclick="navigate('dashboard')"><i class="fas fa-arrow-left"></i> Back</button>
       <h2 id="lbTitle"></h2>
       <p id="lbMeta" style="color:var(--text-muted);margin-bottom:16px;"></p>
       <div id="lbList"></div>
@@ -1297,7 +1300,7 @@ async function loadChPlay(deckId) {
       studyHint.style.marginBottom = '16px';
       studyHint.innerHTML = `
         <p style="font-size:0.85rem;color:var(--text-muted);"><i class="fas fa-lightbulb" style="color:var(--warning);"></i> Study first?
-        ${data.linked_flashcard_decks.map(fd => `<a class="back-link" onclick="navigate('fc-study',${fd.id})" style="margin-left:8px;">${esc(fd.title)}</a>`).join('')}</p>
+        ${data.linked_flashcard_decks.map(fd => `<button class="back-link" onclick="navigate('fc-study',${fd.id})" style="margin-left:8px;">${esc(fd.title)}</button>`).join('')}</p>
       `;
       document.getElementById('chQuizArea').prepend(studyHint);
     }
