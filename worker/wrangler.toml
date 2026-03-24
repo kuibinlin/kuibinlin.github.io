@@ -1,0 +1,19 @@
+name = "linsnotes-api"
+main = "src/index.js"
+compatibility_date = "2026-03-24"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "linsnotes-db"
+database_id = "e7e40805-1eb3-42de-bfe8-2452b965f1c5" # Paste your D1 database ID here (from Cloudflare dashboard → D1 → linsnotes-db)
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "3b9cbc113e0140baa542f454cb1ac5db" # Paste your KV namespace ID here (from Cloudflare dashboard → KV → linsnotes-sessions)
+
+[observability]
+enabled = true
+
+[vars]
+FRONTEND_URL = "https://linsnotes.com/mydeck/"
+FROM_EMAIL = "noreply@linsnotes.com"

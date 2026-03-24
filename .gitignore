@@ -32,3 +32,7 @@ draft/
 CLAUDE.md
 .claude/
 .agents/
+
+# cloudflare
+worker/node_modules/
+worker/.wrangler/

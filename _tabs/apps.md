@@ -37,5 +37,8 @@ order: 4
 > xizi <br> [**xizi**](https://kuibinlin.github.io/xizi/)
 {: .prompt-info }
 
+> MyDeck <br> [**MyDeck**](https://linsnotes.com/mydeck/) — Flashcards & Challenges with leaderboards
+{: .prompt-info }
+
 
 
