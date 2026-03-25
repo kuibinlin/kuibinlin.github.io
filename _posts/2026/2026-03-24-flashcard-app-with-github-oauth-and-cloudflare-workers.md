@@ -53,6 +53,7 @@ A few other motivations stacked on top of that.
 First, I had been wanting to join the GitHub Developer Program and explore what it offers. That made me think about how I could actually integrate the GitHub API into my existing site or a side project.
 
 Second, my friend Samuel Cheong. We’re both AIAP apprentices, and he sits right next to me. At some point, he started learning Chinese terms for machine learning and AI, things like “Convolutional Neural Network is 卷积神经网络.”
+
 He would carry around a printed list of terms, and sometimes when we were on the train home, he’d just take it out and revise like it was light reading.
 
 Even as a Chinese teacher, I realised I didn’t actually know many of these technical terms in Chinese. I learned AI and ML entirely in English. And interestingly, quite a few other AIAP apprentices also found these English-Chinese term lists fun.
@@ -62,13 +63,20 @@ So I thought, if I rebuild the app properly, Samuel could just open it on his ph
 Third, I wanted to try out Cloudflare Workers and D1 in a real project. I had heard about their free tier for a while but never had a good excuse to use them. Also, I wasn’t about to start paying for backend infrastructure for a side project.
 
 So the goals became:
-• Add a proper database so it’s no longer just me managing everything
-• Let anyone create, edit, and share their own decks
-• Support importing decks via a CSV template for convenience
-• Include quiz challenges with leaderboards, so friends can compete (because nothing motivates like a bit of friendly rivalry)
-• Handle user identity, probably via email or GitHub authentication
-• Integrate everything into my existing static site
-• Keep backend costs at exactly zero dollars, ideally forever
+
+- Add a proper database so it’s no longer just me managing everything
+
+- Let anyone create, edit, and share their own decks
+
+- Support importing decks via a CSV template for convenience
+
+- Include quiz challenges with leaderboards, so friends can compete (because nothing motivates like a bit of friendly rivalry)
+
+- Handle user identity, probably via email or GitHub authentication
+
+- Integrate everything into my existing static site
+
+- Keep backend costs at exactly zero dollars, ideally forever
 
 I discussed the idea and plan with Claude Code first. We went through the architecture, features, and trade-offs.
 
