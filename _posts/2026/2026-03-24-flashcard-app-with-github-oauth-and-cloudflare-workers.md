@@ -20,17 +20,61 @@ tags:
 
 ## Why I Built This
 
-Last year when I was still a Chinese teacher, I vibe coded a [Flashcard app](/flashcard/) for my students to learn Chinese vocabulary. It still works, and I still see a few visitors on that page from time to time. The problem is all the card data was created by me, stored in a Google Sheet, and manually loaded in. It worked fine for a small and narrow group of users. They could technically load their own flashcards via Google Sheet, but it was a bit troublesome and not that easy to set up. There was no proper way for others to just create and share their own decks.
+I built a flashcard app. Again.
 
-Then I started thinking about redesigning it. With Claude Code getting more capable, I wanted to see how far I could push it to help me build something real. At the same time, I had been looking at the GitHub Developer Programme requirements, and one of them is to actually use the GitHub API in your app. That gave me the push to finally build something more complete.
+Last year, I vibe-coded a flashcard app for learning Chinese vocabulary.
 
-A few other motivations stacked up on top of that. A friend of mine, Samuel Cheong, has been studying Chinese terms for machine learning and AI. He was carrying around a printed word list. I thought, if I can get this app working, he can just open it on his phone instead. That felt like a good real-world test.
+I was a Chinese teacher, and I kept seeing my students struggle with new vocabulary. A big part of that was simply not reviewing words enough. There weren’t many good flashcard resources that matched what they were learning, and most existing apps weren’t really designed for Chinese. On top of that, creating flashcards takes time, and it’s usually not a student’s top priority.
 
-I also wanted to try Cloudflare Workers and D1 on a real project. I had heard good things about their free tier but never had a proper reason to use them until now. And I did not want to spend money on a backend just for a side project.
+But I knew spaced repetition works. It’s one of the most effective ways to actually remember things, not just cram and forget. Flashcards aren’t the method itself, but they’re probably the simplest way to make spaced repetition actually usable in real life.
 
-So the goals were: let anyone contribute decks, add a quiz challenge mode with leaderboards so friends can compete, use the GitHub API for auth, and keep the entire backend cost at zero.
+So instead of expecting students to make their own flashcards, I built something they could just open and use.
 
-I discussed the idea and the plan with Claude Code first, went through the architecture, the features, and the trade-offs. Once everything looked good, I let it implement. This post walks through how it came together.
+It was a simple web app. Flip, next, previous, shuffle. No backend, just simple HTML code. But it turned out to be quite useful for my students. They actually used it.
+
+Even now, it’s still running, and I still see the occasional bump in visitors.
+
+It worked, but how the flashcards were managed wasn’t ideal. Most of the data was prepared by me alone, stored in a Google Sheet, and then loaded into the web UI through a shared link.
+
+I had designed it this way so teachers or students could create their own flashcards using just Google Sheets and plug them in. It sounded flexible. In practice, not so much.
+
+Every time someone, even me, wanted to create a deck, we had to set the sheet permissions to “anyone can view” so the app could access it. Then users either needed the direct link or had to add it to a master list, which was just another Google Sheet that only I could edit. Not intuitive.
+
+I ended up managing everything, checking accuracy, and maintaining the decks. Not sustainable.
+
+So recently, I started thinking about building another one. Not exactly the flashiest idea, considering the world has moved on to AI-powered apps and agentic workflows.
+
+But I still had my reasons.
+
+With AI coding assistants getting better, especially tools like Claude Code, I wanted to see how far I could push it. Especially since I’m not from a software or CS background, it felt like a good experiment and a way to learn along the way.
+
+A few other motivations stacked on top of that.
+
+First, I had been wanting to join the GitHub Developer Program and explore what it offers. That made me think about how I could actually integrate the GitHub API into my existing site or a side project.
+
+Second, my friend Samuel Cheong. We’re both AIAP apprentices, and he sits right next to me. At some point, he started learning Chinese terms for machine learning and AI, things like “Convolutional Neural Network is 卷积神经网络.”
+He would carry around a printed list of terms, and sometimes when we were on the train home, he’d just take it out and revise like it was light reading.
+
+Even as a Chinese teacher, I realised I didn’t actually know many of these technical terms in Chinese. I learned AI and ML entirely in English. And interestingly, quite a few other AIAP apprentices also found these English-Chinese term lists fun.
+
+So I thought, if I rebuild the app properly, Samuel could just open it on his phone instead of carrying around his trusty piece of paper. That felt like a fun project.
+
+Third, I wanted to try out Cloudflare Workers and D1 in a real project. I had heard about their free tier for a while but never had a good excuse to use them. Also, I wasn’t about to start paying for backend infrastructure for a side project.
+
+So the goals became:
+• Add a proper database so it’s no longer just me managing everything
+• Let anyone create, edit, and share their own decks
+• Support importing decks via a CSV template for convenience
+• Include quiz challenges with leaderboards, so friends can compete (because nothing motivates like a bit of friendly rivalry)
+• Handle user identity, probably via email or GitHub authentication
+• Integrate everything into my existing static site
+• Keep backend costs at exactly zero dollars, ideally forever
+
+I discussed the idea and plan with Claude Code first. We went through the architecture, features, and trade-offs.
+
+Once everything looked solid, I let it take a shot at implementing it.
+
+What follows is how it all came together.
 
 ## Architecture Overview
 
