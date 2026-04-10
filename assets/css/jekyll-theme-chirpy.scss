@@ -91,14 +91,27 @@ $site-subtitle-color-dark: #74b2f3;
 }
 
 /* ------------------------------------------------------------------
- * Mobile home: collapse to sidebar-only "menu" view.
+ * Mobile home: collapse to sidebar-only "menu" view, with a floating
+ * toggle button that flips to Chirpy's default posts view and back.
+ *
  * Scoped via :has(#post-list), an ID unique to Chirpy's home layout
  * (archives/categories/tags use different IDs), so this only fires
  * on `/`. Zero markup changes — :has() matches against the DOM even
  * when descendants are display:none.
+ *
+ * The `:not(.posts-mode)` gate disengages the menu-view override when
+ * JS toggles `body.posts-mode`, letting Chirpy's default mobile layout
+ * return untouched.
  * ------------------------------------------------------------------ */
+
+// Hidden everywhere by default; the media query below reveals it on
+// mobile home. JS always injects it on the home layout.
+.home-toggle {
+  display: none;
+}
+
 @media (max-width: 849px) {
-  body:has(#post-list) {
+  body:has(#post-list):not(.posts-mode) {
     min-height: 100vh; // safety net for iOS Safari (no body content otherwise)
 
     #main-wrapper {
@@ -118,8 +131,13 @@ $site-subtitle-color-dark: #74b2f3;
       // Center them instead so the now-full-width sidebar feels balanced.
       align-items: center !important;
 
-      // Center the profile header (avatar + name + tagline)
+      // Center the profile header (avatar + name + tagline).
+      // Chirpy sets asymmetric padding (2.5rem left, 1.25rem right),
+      // which makes text-align:center visually off-center within the
+      // full-width sidebar — zero it out here for true centering.
       .profile-wrapper {
+        padding-left: 0;
+        padding-right: 0;
         text-align: center;
       }
 
@@ -138,5 +156,50 @@ $site-subtitle-color-dark: #74b2f3;
         justify-content: center;
       }
     }
+  }
+
+  // Floating mode toggle: lives top-left in both modes. In posts mode
+  // it sits exactly where Chirpy's (now hidden) hamburger was; in menu
+  // mode the sidebar's top-left corner is empty (content is centered).
+  // Top-right is avoided because Chirpy's topbar puts the search icon
+  // there in posts mode.
+  body:has(#post-list) .home-toggle {
+    display: flex;
+    position: fixed;
+    top: 0.75rem;
+    left: 1rem;
+    z-index: 100;
+    height: 30px;
+    padding: 0 0.85rem;
+    // --btn-border-color matches Chirpy's own buttons (e.g. back-to-top)
+    // for a native-feeling outline instead of a harsh dark stroke.
+    border: 1px solid var(--btn-border-color);
+    border-radius: 15px;
+    background: var(--sidebar-bg);
+    color: var(--site-subtitle-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
+
+  // In posts mode the topbar returns — hide Chirpy's hamburger so the
+  // floating toggle is the only way back to menu view. !important is
+  // required because Chirpy sets display on #sidebar-trigger via
+  // Bootstrap utility classes.
+  body.posts-mode #sidebar-trigger {
+    display: none !important;
+  }
+
+  // Hide the floating toggle while Chirpy's mobile search is open,
+  // otherwise the "Home" pill overlaps the expanded search input.
+  // Body gets `.search-active` from JS on #search-trigger click and
+  // loses it on #search-cancel click.
+  body:has(#post-list).search-active .home-toggle {
+    display: none;
   }
 }

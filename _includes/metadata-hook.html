@@ -19,3 +19,53 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/assets/js/map-renderer.js" defer></script>
 {% endif %}
+
+{% if page.layout == 'home' %}
+  <script>
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        var MENU_LABEL = 'Posts';
+        var POSTS_LABEL = 'Home';
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'home-toggle';
+        btn.setAttribute('aria-label', 'Toggle posts view');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = MENU_LABEL;
+        document.body.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var on = document.body.classList.toggle('posts-mode');
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          btn.textContent = on ? POSTS_LABEL : MENU_LABEL;
+        });
+
+        // Defensive: prevent a stuck posts-mode state if the user
+        // resizes/rotates into desktop width while toggled on.
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 849 && document.body.classList.contains('posts-mode')) {
+            document.body.classList.remove('posts-mode');
+            btn.setAttribute('aria-pressed', 'false');
+            btn.textContent = MENU_LABEL;
+          }
+        });
+
+        // Hide the toggle while Chirpy's mobile search overlay is open
+        // so it doesn't overlap the expanded search input.
+        var searchTrigger = document.getElementById('search-trigger');
+        var searchCancel = document.getElementById('search-cancel');
+        if (searchTrigger) {
+          searchTrigger.addEventListener('click', function () {
+            document.body.classList.add('search-active');
+          });
+        }
+        if (searchCancel) {
+          searchCancel.addEventListener('click', function () {
+            document.body.classList.remove('search-active');
+          });
+        }
+      });
+    })();
+  </script>
+{% endif %}
