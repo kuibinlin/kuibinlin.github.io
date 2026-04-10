@@ -41,8 +41,8 @@
           btn.textContent = on ? POSTS_LABEL : MENU_LABEL;
         });
 
-        // Defensive: prevent a stuck posts-mode state if the user
-        // resizes/rotates into desktop width while toggled on.
+        /* Defensive: prevent a stuck posts-mode state if the user
+           resizes/rotates into desktop width while toggled on. */
         window.addEventListener('resize', function () {
           if (window.innerWidth > 849 && document.body.classList.contains('posts-mode')) {
             document.body.classList.remove('posts-mode');
@@ -51,8 +51,8 @@
           }
         });
 
-        // Hide the toggle while Chirpy's mobile search overlay is open
-        // so it doesn't overlap the expanded search input.
+        /* Hide the toggle while Chirpy's mobile search overlay is open
+           so it doesn't overlap the expanded search input. */
         var searchTrigger = document.getElementById('search-trigger');
         var searchCancel = document.getElementById('search-cancel');
         if (searchTrigger) {
