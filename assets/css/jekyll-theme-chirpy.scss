@@ -167,16 +167,18 @@ $site-subtitle-color-dark: #74b2f3;
     display: flex;
     position: fixed;
     top: 0.75rem;
-    left: 1rem;
+    // Respect the notch / left safe-area inset in landscape on
+    // iPhone X+; falls back to 1rem on devices without an inset.
+    left: max(1rem, env(safe-area-inset-left));
     z-index: 100;
     height: 30px;
     padding: 0 0.85rem;
-    // --btn-border-color matches Chirpy's own buttons (e.g. back-to-top)
-    // for a native-feeling outline instead of a harsh dark stroke.
-    border: 1px solid var(--btn-border-color);
+    // Palette mirrors Chirpy's #back-to-top button for a sibling feel:
+    // same background, border, and muted text color.
+    border: 1px solid var(--btn-backtotop-border-color);
     border-radius: 15px;
-    background: var(--sidebar-bg);
-    color: var(--site-subtitle-color);
+    background: var(--button-bg);
+    color: var(--btn-backtotop-color);
     font-size: 0.8rem;
     font-weight: 700;
     line-height: 1;
@@ -185,6 +187,12 @@ $site-subtitle-color-dark: #74b2f3;
     justify-content: center;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     cursor: pointer;
+    // Strip iOS Safari's native button chrome (subtle gradient / inner
+    // bevel) so our background + border render cleanly.
+    -webkit-appearance: none;
+    appearance: none;
+    // Kill the gray tap flash iOS shows on button press.
+    -webkit-tap-highlight-color: transparent;
   }
 
   // In posts mode the topbar returns — hide Chirpy's hamburger so the
