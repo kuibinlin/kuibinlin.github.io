@@ -1,11 +1,17 @@
 ---
 # the default layout is 'page'
 layout: about
-icon: fas fa-external-link-square
+icon: fas fa-diagram-project
 order: 4
 ---
 > These are web-based tools for learning Chinese, built using HTML and JavaScript.
 {: .prompt-tip }
+
+> AI Playground <br> [**AI Playground**](/ai-playground/) — Experiment with 6 AI models: text-to-image, chat, vision, sentiment analysis, summarization, and translation.
+{: .prompt-info }
+
+> Attention Visualiser <br> [**Attention Visualiser**](/attention-visualiser/) — Learn how transformer attention works step by step.
+{: .prompt-info }
 
 > Typing <br> [**Typing**](https://kuibinlin.github.io/typing/)
 {: .prompt-info }

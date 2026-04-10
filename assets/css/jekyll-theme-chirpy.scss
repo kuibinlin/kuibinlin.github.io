@@ -118,17 +118,9 @@ $site-subtitle-color-dark: #74b2f3;
       // Center them instead so the now-full-width sidebar feels balanced.
       align-items: center !important;
 
-      // Vertical breathing room top/bottom
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-
-      // --- Profile block (avatar + name + tagline) ----------------
+      // Center the profile header (avatar + name + tagline)
       .profile-wrapper {
         text-align: center;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        margin-top: 3rem;
-        margin-bottom: 2.5rem;
       }
 
       #avatar {
@@ -139,39 +131,11 @@ $site-subtitle-color-dark: #74b2f3;
       .site-title {
         margin-left: auto;
         margin-right: auto;
-        font-size: 2rem;
       }
 
-      .site-subtitle {
-        font-size: 1rem;
-        margin-top: 0.5rem;
-      }
-
-      // --- Nav links: cap width and center the column -------------
-      nav {
-        max-width: 420px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      ul {
-        margin-bottom: 2.5rem;
-
-        li.nav-item {
-          a.nav-link {
-            padding-top: 0.85rem;
-            padding-bottom: 0.85rem;
-            font-size: 1rem;
-          }
-        }
-      }
-
-      // --- Bottom strip (theme toggle + social icons) --------------
+      // Center the bottom strip (theme toggle + social icons)
       .sidebar-bottom {
         justify-content: center;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        margin-bottom: 2rem;
       }
     }
   }
