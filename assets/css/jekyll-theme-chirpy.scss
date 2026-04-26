@@ -91,27 +91,42 @@ $site-subtitle-color-dark: #74b2f3;
 }
 
 /* ------------------------------------------------------------------
- * Mobile home: collapse to sidebar-only "menu" view, with a floating
- * toggle button that flips to Chirpy's default posts view and back.
+ * Mobile home: collapse to sidebar-only "menu" view. JS injects a
+ * "POSTS" tab right after "HOME" in the sidebar; tapping it sets
+ * html.posts-mode, which disengages this override and lets Chirpy's
+ * default mobile layout (topbar + posts list + hamburger) return.
+ * To return, users tap HOME (Chirpy's existing /-link) which reloads
+ * the home page in default menu view.
  *
  * Scoped via :has(#post-list), an ID unique to Chirpy's home layout
  * (archives/categories/tags use different IDs), so this only fires
  * on `/`. Zero markup changes — :has() matches against the DOM even
  * when descendants are display:none.
  *
- * The `:not(.posts-mode)` gate disengages the menu-view override when
- * JS toggles `body.posts-mode`, letting Chirpy's default mobile layout
- * return untouched.
+ * The class lives on <html> (not <body>) so a synchronous inline head
+ * script can pre-apply it on /#posts deep-link before body renders,
+ * avoiding a flash of menu view on first paint.
  * ------------------------------------------------------------------ */
 
-// Hidden everywhere by default; the media query below reveals it on
-// mobile home. JS always injects it on the home layout.
-.home-toggle {
-  display: none;
+// The injected sidebar "POSTS" tab is mobile-only — desktop home already
+// shows posts on the right, so this would be redundant there.
+@media (min-width: 850px) {
+  .nav-item.posts-toggle {
+    display: none;
+  }
+}
+
+// Suppress Chirpy's `slide` mixin transform-transition on #sidebar during
+// our menu↔posts toggle (JS adds the class for two animation frames),
+// so the sidebar snaps instead of sliding off-screen and revealing the
+// posts list mid-animation.
+.no-sidebar-transition #sidebar {
+  transition: none !important;
+  -webkit-transition: none !important;
 }
 
 @media (max-width: 849px) {
-  body:has(#post-list):not(.posts-mode) {
+  html:not(.posts-mode) body:has(#post-list) {
     min-height: 100vh; // safety net for iOS Safari (no body content otherwise)
 
     #main-wrapper {
@@ -156,58 +171,5 @@ $site-subtitle-color-dark: #74b2f3;
         justify-content: center;
       }
     }
-  }
-
-  // Floating mode toggle: lives top-left in both modes. In posts mode
-  // it sits exactly where Chirpy's (now hidden) hamburger was; in menu
-  // mode the sidebar's top-left corner is empty (content is centered).
-  // Top-right is avoided because Chirpy's topbar puts the search icon
-  // there in posts mode.
-  body:has(#post-list) .home-toggle {
-    display: flex;
-    position: fixed;
-    top: 0.75rem;
-    // Respect the notch / left safe-area inset in landscape on
-    // iPhone X+; falls back to 1rem on devices without an inset.
-    left: max(1rem, env(safe-area-inset-left));
-    z-index: 100;
-    height: 30px;
-    padding: 0 0.85rem;
-    // Palette mirrors Chirpy's #back-to-top button for a sibling feel:
-    // same background, border, and muted text color.
-    border: 1px solid var(--btn-backtotop-border-color);
-    border-radius: 15px;
-    background: var(--button-bg);
-    color: var(--site-subtitle-color);
-    font-size: 0.8rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-    // Strip iOS Safari's native button chrome (subtle gradient / inner
-    // bevel) so our background + border render cleanly.
-    -webkit-appearance: none;
-    appearance: none;
-    // Kill the gray tap flash iOS shows on button press.
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  // In posts mode the topbar returns — hide Chirpy's hamburger so the
-  // floating toggle is the only way back to menu view. !important is
-  // required because Chirpy sets display on #sidebar-trigger via
-  // Bootstrap utility classes.
-  body.posts-mode #sidebar-trigger {
-    display: none !important;
-  }
-
-  // Hide the floating toggle while Chirpy's mobile search is open,
-  // otherwise the "Home" pill overlaps the expanded search input.
-  // Body gets `.search-active` from JS on #search-trigger click and
-  // loses it on #search-cancel click.
-  body:has(#post-list).search-active .home-toggle {
-    display: none;
   }
 }
