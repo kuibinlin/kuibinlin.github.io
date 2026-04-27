@@ -4,6 +4,7 @@
     class="nav-link nav-link-subscribe"
     data-color="{{ site.subscribe.color | default: 'blue' }}"
   >
-    <span>{{ site.subscribe.text | default: 'Get Updates' }}</span>
+    <i class="fa-fw fas fa-bell"></i>
+    <span>{{ site.subscribe.text | default: 'Get Updates' | upcase }}</span>
   </a>
 </li>
