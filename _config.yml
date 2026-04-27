@@ -64,6 +64,13 @@ social:
     - https://www.linkedin.com/in/kuibinlin
     # - https://www.facebook.com/username
 
+# Newsletter subscribe (Brevo) — sidebar button linking to /subscribe/
+subscribe:
+  enabled: true
+  text: "Subscribe" # button label
+  # Color presets: blue (default) | green | purple | orange | red | dark
+  color:
+
 # Site Verification Settings. You can leave these empty if you are using DNS-based verification methods.
 # Using DNS-based verification for google, bing.
 webmaster_verifications:

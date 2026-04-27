@@ -173,3 +173,65 @@ $site-subtitle-color-dark: #74b2f3;
     }
   }
 }
+
+/* ------------------------------------------------------------------
+ * Sidebar "Get Updates" button (Chirpy override). Renders as the last
+ * item in <ul class="nav">, after all tabs. Controlled by
+ * `subscribe.{enabled,text,color}` in _config.yml.
+ * Color presets via [data-color="..."]; default is blue.
+ * ------------------------------------------------------------------ */
+.nav-item-subscribe {
+  margin: 0.5rem 1rem; // inset from sidebar edges → reads as a button
+  list-style: none;
+  text-align: left; // align button to left edge of the li
+}
+
+.nav-link-subscribe {
+  --sub-bg: #0969da; // default (blue preset fallback)
+
+  // !important needed: Chirpy's `a.nav-link` rule uses `display: flex`
+  // with higher specificity (qualified type+class selector) and would
+  // otherwise stretch the button to fill the sidebar width.
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff !important;
+  background: var(--sub-bg) !important;
+  border-radius: 6px;
+
+  // Lock hover to base style — overrides Chirpy's .nav-link:hover
+  // which would otherwise swap the background to --sidebar-hover-bg.
+  &:hover {
+    color: #fff !important;
+    background: var(--sub-bg) !important;
+  }
+
+  // Color presets — values are static hexes for portability
+  &[data-color='blue']   { --sub-bg: #0969da; }
+  &[data-color='green']  { --sub-bg: #10a344; }
+  &[data-color='purple'] { --sub-bg: #6f42c1; }
+  &[data-color='orange'] { --sub-bg: #fd7e14; }
+  &[data-color='red']    { --sub-bg: #d73a49; }
+  &[data-color='dark']   { --sub-bg: #24292e; }
+}
+
+/* ------------------------------------------------------------------
+ * /subscribe/ page — neutralizers for the verbatim Brevo embed in
+ * _includes/brevo-form.html. Lets users paste their Brevo embed
+ * as-is while the form still inherits this site's typography.
+ * ------------------------------------------------------------------ */
+.subscribe-page {
+  max-width: 540px;
+  margin: 1rem auto;
+
+  // Brevo's embed loads Roboto via @font-face and applies Helvetica
+  // via inline styles. Force everything inside the form to inherit
+  // the Chirpy font stack so it matches the rest of the site.
+  .sib-form,
+  .sib-form * {
+    font-family: inherit !important;
+  }
+}
