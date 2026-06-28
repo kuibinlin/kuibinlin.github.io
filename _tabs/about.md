@@ -11,15 +11,20 @@ order: 6
 
 ## Hi. I’m Kuibin Lin. Nice to meet you!
 
-I can’t quite recall when or how it started, but at some point, I realised that a basic understanding of programming isn’t just practical—it underpins innovation and progress while helping us navigate and understand the modern world. Back at university, I always wanted to take a programming module, but it never worked out with my schedule. So, I never got to study it formally at university.
+I'm an AI engineer, and before that I spent seven years teaching Chinese. I came to technology fairly late, and mostly through self-study.
 
-After I started working, I took a short course on data science with Python. My learning’s been a bit on and off since then, but my curiosity about programming and computer hardware has never gone away.
+I can't remember exactly when it started, but at some point I realised that even a basic understanding of programming isn't just useful, it's part of the foundation of how the modern world works and how new ideas become reality. Back at university, I always wanted to take a programming module, but it never fit into my timetable, so I never had the chance to study it formally.
 
-With bootcamps and courses being quite pricey, I decided to teach myself using online resources like YouTube, Coursera, and Udemy. When [AI Singapore](https://aisingapore.org/) offered a promotional price for its AI course along with a DataCamp subscription code, I made use of that as well. Ever since ChatGPT came onto the scene, learning new skills has become so much simpler. By combining online tutorials with ChatGPT's guidance, I’ve explored a wide range of projects—building PCs, working with Python, HTML, CSS, JavaScript, Jekyll, GitHub Pages, Raspberry Pi, Cloudflare DNS, WireGuard VPN, Docker, Nginx, Proxmox Virtual Environment, TrueNAS, OpenWRT, Azure Cloud, and more.
+After I started working, I took a short data science course that used Python. My learning has been on and off ever since, but my curiosity about programming, AI, and computer hardware has never faded.
 
-I initially started this blog as a way to learn Jekyll and GitHub Pages, but it’s grown into a space where I document my learning journey and share what I’ve discovered. Below, you’ll find a list of [tools](/tags) or you can browse the [categories](/categories) I’ve been exploring.
+Since bootcamps and formal courses can be expensive, I taught myself using resources like YouTube, Coursera, and Udemy. Later, I enrolled in an [AI Singapore](https://aisingapore.org/) course when it was offered at a promotional price with a complimentary DataCamp subscription. I didn't expect much beyond learning a few new skills, but that course eventually led me to become an Associate AI Engineer in AI Singapore's AI Apprenticeship Programme.
 
-You can find my contact details at the bottom of the sidebar, including links to my GitHub, DataCamp portfolio, Linkedin, and email, if you'd like to connect.
+The arrival of tools like ChatGPT made learning even more accessible. By combining online tutorials with AI, I've been able to explore a wide range of technologies, including building PCs, Python, HTML, CSS, JavaScript, Jekyll, GitHub Pages, Raspberry Pi, Cloudflare DNS, WireGuard VPN, Docker, Nginx, Proxmox VE, TrueNAS, OpenWrt, Azure, and more.
+
+I originally started this blog as a way to learn Jekyll and GitHub Pages. Over time, it has become a place where I document what I'm learning, share the projects I'm working on, and write about things I think others might find useful. You can browse the [tools](/tags) I've used or explore the different topics I've written about.
+
+You'll also find links to my GitHub, LinkedIn, and email in the sidebar. If anything here resonates with you, or you're working on something similar, I'd be happy to connect.
+
 
 <hr class="about">
 
