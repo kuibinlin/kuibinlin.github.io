@@ -7,29 +7,32 @@ $site-title-color-dark: #f1f1f1;
 $site-subtitle-color-dark: #74b2f3;
 
 // Override CSS custom properties per color scheme.
-// Mirrors Chirpy's base logic (data-bs-theme) so both system
-// preference and the manual light/dark toggle are handled consistently.
+// Uses :root (not html) to match the specificity of Chirpy's own
+// theme rules (:root[data-bs-theme=...]); since this file is @use'd
+// after the theme, equal specificity means these win on source order.
+// data-bs-theme handles the manual toggle; the media queries handle
+// the system-preference (no-attribute) case.
 @media (prefers-color-scheme: light) {
-  html:not([data-bs-theme]),
-  html[data-bs-theme='light'] {
+  :root:not([data-bs-theme]),
+  :root[data-bs-theme='light'] {
     --site-title-color: #{$site-title-color-light};
     --site-subtitle-color: #{$site-subtitle-color-light};
   }
 
-  html[data-bs-theme='dark'] {
+  :root[data-bs-theme='dark'] {
     --site-title-color: #{$site-title-color-dark};
     --site-subtitle-color: #{$site-subtitle-color-dark};
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not([data-bs-theme]),
-  html[data-bs-theme='dark'] {
+  :root:not([data-bs-theme]),
+  :root[data-bs-theme='dark'] {
     --site-title-color: #{$site-title-color-dark};
     --site-subtitle-color: #{$site-subtitle-color-dark};
   }
 
-  html[data-bs-theme='light'] {
+  :root[data-bs-theme='light'] {
     --site-title-color: #{$site-title-color-light};
     --site-subtitle-color: #{$site-subtitle-color-light};
   }
