@@ -1,0 +1,10 @@
+// Chart.js responsive containers
+[data-chart] {
+  position: relative;
+  width: 100%;
+  height: 280px;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+}

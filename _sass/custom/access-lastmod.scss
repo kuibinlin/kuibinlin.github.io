@@ -1,0 +1,5 @@
+// sidebar-right 'Recently Updated' use blue accent color
+#access-lastmod a:hover {
+  color: var(--toc-highlight) !important;
+  border-bottom: 1px solid var(--toc-highlight) !important;
+}
