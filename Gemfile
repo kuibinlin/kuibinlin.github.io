@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "= 7.5.0"
-gem 'jekyll-target-blank', '= 2.0.2'
+gem "jekyll-theme-chirpy", "= 7.6.0"
+# gem 'jekyll-target-blank', '= 2.0.2'
 
 gem "html-proofer", "~> 5.0", group: :test
 
