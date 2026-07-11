@@ -1,0 +1,19 @@
+// Site-wide link-hover accent: blue instead of Chirpy's default orange.
+// The theme groups these selectors under %link-hover (color: #d2603a
+// !important). We mirror that exact selector list and swap in the blue
+// var(--toc-highlight) — theme-aware, and consistent everywhere:
+// post-meta ("By Author"), in-post links, breadcrumb, tags/categories,
+// search results, license, edit link, sidebar "Recently Updated", footer.
+#page-category a:hover,
+#page-tag a:hover,
+#access-lastmod a:hover,
+.post-tail-wrapper .license-wrapper > a:hover,
+.post-edit > a:hover,
+#search-results a:hover,
+footer a:hover,
+#topbar #breadcrumb a:hover,
+.post-meta a:not([class]):hover,
+.content a:not(.img-link):hover {
+  color: var(--toc-highlight) !important;
+  border-bottom-color: var(--toc-highlight);
+}
