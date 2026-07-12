@@ -4,7 +4,7 @@ title: Block Ads on Every Device in Your Home Network with Pi-hole
 description: Learn how to set up Pi-hole on a Raspberry Pi to block ads, trackers, and telemetry across all devices on your home Wi-Fi without installing anything on each device.
 date: 2026-03-23 15:00:00 +0800
 media_subpath: /assets/media/2026/block-ads-with-pihole
-image: pihole.png
+image: pihole.webp
 published: true
 categories: homelab
 tags:

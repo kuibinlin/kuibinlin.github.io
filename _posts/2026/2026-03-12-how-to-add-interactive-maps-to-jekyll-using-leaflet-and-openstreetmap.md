@@ -7,7 +7,7 @@ published: true
 categories: website
 tags: [jekyll, leaflet, openstreetmap, map, tutorial]
 media_subpath: /assets/media/2026/how-to-add-interactive-maps-to-jekyll-using-leaflet-and-openstreetmap/
-image: leaflet_openstreetmap.png
+image: leaflet_openstreetmap.webp
 map:
   center: [1.3521, 103.8198]
   zoom: 11

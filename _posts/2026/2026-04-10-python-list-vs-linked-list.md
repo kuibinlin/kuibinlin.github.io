@@ -4,7 +4,7 @@ title: Python List vs Linked List
 description: A visual, operation-by-operation comparison of Python list and linked list with Big-O analysis, code examples, and ASCII diagrams.
 date: 2026-04-10 00:10:00 +0800
 media_subpath: /assets/media/2026/python-list-linkedlist
-image: list-and-linkedlist.png
+image: list-and-linkedlist.webp
 published: true
 categories: [python]
 toc: true

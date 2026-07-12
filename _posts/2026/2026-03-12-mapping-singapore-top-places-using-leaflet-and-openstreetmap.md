@@ -6,7 +6,7 @@ date: 2026-03-12 15:00:00 +0800
 published: true
 categories: website
 media_subpath: /assets/media/2026/mapping-singapore-with-leaflet-openstreetmap/
-image: singapore.png
+image: singapore.webp
 tags: [map, leaflet, openstreet, singapore]
 map:
   center: [1.3521, 103.8198] # required — [latitude, longitude]

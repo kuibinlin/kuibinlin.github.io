@@ -7,7 +7,7 @@ published: true #false or true
 categories: local-llm
 toc: true
 media_subpath: /assets/media/2026/open-webui-self-hosted-setup-guide
-image: openwebui.png
+image: openwebui.webp
 tags: [llm, openwebui, ollama]
 ---
 

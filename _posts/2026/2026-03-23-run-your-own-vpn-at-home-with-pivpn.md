@@ -4,7 +4,7 @@ title: Run Your Own VPN at Home with PiVPN
 description: A step-by-step guide to setting up PiVPN with WireGuard on a Raspberry Pi for secure remote access to your home network.
 date: 2026-03-23 12:00:00 +0800
 media_subpath: /assets/media/2026/run-your-own-vpn-at-home-with-pivpn
-image: pivpn-home-vpn.png
+image: pivpn-home-vpn.webp
 published: true
 categories: homelab
 tags: [vpn, pivpn, wireguard, homelab, self-hosting, networking]

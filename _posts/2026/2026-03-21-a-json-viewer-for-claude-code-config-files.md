@@ -4,7 +4,7 @@ title: A JSON Viewer for Claude Code Config Files
 description: Visualize Claude Code's nested JSON config files with a browser-based viewer for easier understanding of settings.
 date: 2026-03-21 12:00:00 +0800
 media_subpath: /assets/media/2026/claude-config-viewer
-image: claude-json.png
+image: claude-json.webp
 published: true
 categories: claude
 tags: [claude-code, mcp, json, vibe-coding]

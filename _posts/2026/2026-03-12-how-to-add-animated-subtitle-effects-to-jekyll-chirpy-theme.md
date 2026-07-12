@@ -5,7 +5,7 @@ description: Add typewriter and decode animation effects to Chirpy theme subtitl
 date: 2026-03-12 21:00:00 +0800
 published: true
 media_subpath: /assets/media/2026/how-to-add-animated-subtitle-effects-to-jekyll-chirpy-theme/
-image: jekyll-chirpy.png
+image: jekyll-chirpy.webp
 categories: website
 tags: [jekyll, chirpy, animation, typewriter, subtitle, tutorial]
 ---

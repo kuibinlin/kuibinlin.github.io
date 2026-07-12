@@ -4,7 +4,7 @@ title: Flashcard App with GitHub OAuth and Cloudflare Workers
 description: How I built a full-stack learning platform with user auth, leaderboards, and a real database on top of a Jekyll static site, using Cloudflare Workers and D1 for free.
 date: 2026-03-24 19:00:00 +0800
 media_subpath: /assets/media/2026/flashcard-app-with-github-oauth-and-cloudflare-workers
-image: github_cloudflare.png
+image: github_cloudflare.webp
 published: false
 categories: [website, project]
 tags:

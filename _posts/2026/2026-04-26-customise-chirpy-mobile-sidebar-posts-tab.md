@@ -6,8 +6,8 @@ date: 2026-04-26 12:00:00 +0800
 published: true
 categories: jekyll
 toc: true
-media_subpath: /assets/media/2019/text-and-typography
-image: devices-mockup.png
+media_subpath: /assets/media/2026/customise-chirpy-mobile-view
+image: chirpy-mobile.webp
 tags: [chirpy, mobile]
 ---
 

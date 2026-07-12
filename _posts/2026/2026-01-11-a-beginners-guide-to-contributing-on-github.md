@@ -7,7 +7,7 @@ published: true #false or true
 categories: github
 toc: true
 media_subpath: /assets/media/2026/a-beginners-guide-to-contributing-on-github
-image: opensource.png
+image: opensource.webp
 tags: [open-source, git, github]
 ---
 

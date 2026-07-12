@@ -4,7 +4,7 @@ title: Building an AI Playground with Hugging Face Inference API & Cloudflare Wo
 description: Build browser-based AI demos using Hugging Face API proxied through Cloudflare Workers without server code.
 date: 2026-03-13 12:00:00 +0800
 media_subpath: /assets/media/2026/ai-playground-with-hugging-face-and-cloudflare-workers
-image: ai-playground.png
+image: ai-playground.webp
 published: true
 categories: website
 tags: [hugging-face, cloudflare-workers, ai, javascript, tutorial, jekyll]
