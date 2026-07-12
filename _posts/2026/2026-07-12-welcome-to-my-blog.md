@@ -28,7 +28,7 @@ You'll find posts on:
 
 - Browse by [**Categories**](/categories/) or [**Tags**](/tags/) to find a topic
 - Skim the [**Archives**](/archives/) for everything in date order
-- Try the [**Apps**](/apps/) — small web tools I've built
+- Try the [**Apps**](/projects/) — small web tools I've built
 - The [**About**](/about/) page has the longer version of my story
 
 ## Say hi
