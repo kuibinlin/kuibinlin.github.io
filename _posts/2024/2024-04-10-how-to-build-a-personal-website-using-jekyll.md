@@ -4,6 +4,8 @@ title: How to Build a Personal Website Using Jekyll
 description: Step-by-step guide to creating a static personal website with Jekyll and Ruby on Windows.
 date: 2024-04-10 20:30:00 +0800
 published: true #false or true
+media_subpath: /assets/media/2024/personal-website-using-jekyll/
+image: jekyll.webp
 categories: website
 tags: [jekyll, ruby]
 ---
