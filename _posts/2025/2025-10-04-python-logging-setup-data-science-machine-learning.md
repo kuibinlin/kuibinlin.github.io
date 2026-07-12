@@ -7,7 +7,7 @@ published: true #false or true
 categories: machine-learning
 toc: true
 media_subpath: /assets/media/2025/python-logging-setup-data-science-machine-learning
-image: logging.png
+image: logging.webp
 tags: [machine-learning, logging, python]
 ---
 

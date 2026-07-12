@@ -7,7 +7,7 @@ published: true #false or true
 categories: python
 toc: true
 media_subpath: /assets/media/2025/dunder-methods-in-python
-image: dunber.jpg
+image: dunber.webp
 tags: [dunber, class]
 ---
 

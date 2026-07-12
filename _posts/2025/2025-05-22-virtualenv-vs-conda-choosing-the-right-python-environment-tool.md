@@ -7,7 +7,7 @@ published: true #false or true
 categories: python
 toc: true
 media_subpath: /assets/media/2025/virtualenv-vs-conda-choosing-the-right-python-environment-tool
-image: venv_conda.jpeg
+image: venv_conda.webp
 tags: [virtualenv, conda]
 ---
 

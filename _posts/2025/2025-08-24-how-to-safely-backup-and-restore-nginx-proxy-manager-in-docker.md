@@ -7,7 +7,7 @@ published: true #false or true
 categories: raspberrypi
 toc: true
 media_subpath: /assets/media/2025/how-to-safely-backup-and-restore-nginx-proxy-manager-in-docker
-image: nginx.png
+image: nginx.webp
 tags: [pi, docker, portainer, nginx]
 ---
 

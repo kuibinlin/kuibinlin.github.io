@@ -7,7 +7,7 @@ published: true #false or true
 categories: machine-learning
 toc: true
 media_subpath: /assets/media/2025/machine-learning-algorithms-explained-end-to-end-pipeline-guide
-image: ml-pipeline.png
+image: ml-pipeline.webp
 tags: [machine-learning, pipeline, sklearn, model]
 ---
 

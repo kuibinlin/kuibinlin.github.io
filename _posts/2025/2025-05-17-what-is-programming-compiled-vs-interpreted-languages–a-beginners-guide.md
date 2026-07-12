@@ -7,7 +7,7 @@ published: true #false or true
 categories: programming
 toc: true
 media_subpath: /assets/media/2025/what-is-programming-compiled-vs-interpreted-languages–a-beginners-guide
-image: what-is-programming.jpg
+image: what-is-programming.webp
 tags: [programming, compiler, python]
 ---
 

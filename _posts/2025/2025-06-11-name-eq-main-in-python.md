@@ -7,7 +7,7 @@ published: true #false or true
 categories: python
 toc: true
 media_subpath: /assets/media/2025/name-main-in-python
-image: name-main.jpg
+image: name-main.webp
 tags: [main, module]
 ---
 

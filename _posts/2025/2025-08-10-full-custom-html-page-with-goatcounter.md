@@ -7,7 +7,7 @@ published: true #false or true
 categories: jekyll
 toc: true
 media_subpath: /assets/media/2025/full-custom-html-page-with-goatcounter
-image: html-goatcounter.png
+image: html-goatcounter.webp
 tags: [html, goatcounter]
 ---
 

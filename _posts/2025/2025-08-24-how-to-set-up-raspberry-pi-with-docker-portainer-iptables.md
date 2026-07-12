@@ -7,7 +7,7 @@ published: true #false or true
 categories: raspberrypi
 toc: true
 media_subpath: /assets/media/2025/how-to-set-up-raspberry-pi-with-docker-portainer-iptables
-image: raspberrypi_docker.png
+image: raspberrypi_docker.webp
 tags: [pi, docker, portainer, iptables]
 ---
 

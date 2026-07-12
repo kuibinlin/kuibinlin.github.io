@@ -7,7 +7,7 @@ published: true #false or true
 categories: n8n
 toc: true
 media_subpath: /assets/media/2025/deploying-n8n-ai-starter-kit-on-raspberry-pi
-image: raspberrypi_n8n.png
+image: raspberrypi_n8n.webp
 tags: [n8n, pi, docker, portainer]
 ---
 
