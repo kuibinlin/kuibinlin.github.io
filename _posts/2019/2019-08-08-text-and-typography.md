@@ -10,6 +10,7 @@ pin: false
 math: true
 mermaid: true
 media_subpath: /assets/media/2019/text-and-typography/
+image: mockup.png
 comments: false
 ---
 
