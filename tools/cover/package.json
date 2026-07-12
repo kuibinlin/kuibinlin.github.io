@@ -1,0 +1,17 @@
+{
+  "name": "cover-studio-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generate 1200x630 blog cover images from a post's front matter by headlessly rendering webapps/cover-studio.",
+  "scripts": {
+    "cover": "node generate.mjs",
+    "setup": "puppeteer browsers install chrome"
+  },
+  "dependencies": {
+    "puppeteer": "^25.3.0"
+  },
+  "allowScripts": {
+    "puppeteer@25.3.0": true
+  }
+}

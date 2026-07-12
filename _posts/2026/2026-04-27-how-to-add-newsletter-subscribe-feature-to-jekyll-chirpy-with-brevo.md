@@ -7,7 +7,7 @@ published: true
 categories: jekyll
 toc: true
 media_subpath: /assets/media/2026/how-to-add-newsletter-subscribe-feature-to-jekyll-chirpy-with-brevo
-image: subscribe.png
+image: subscribe.webp
 tags: [chirpy, brevo, subscribe, jekyll]
 ---
 
