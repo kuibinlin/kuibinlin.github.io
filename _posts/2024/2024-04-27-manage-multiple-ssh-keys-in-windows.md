@@ -4,7 +4,7 @@ description: Configure Windows SSH to use different keys for different hosts, en
 date: 2024-04-27 13:00:00 +0800
 categories: linux
 toc: true
-media_subpath: /assets/media/2024/manage-multiple-ssh-keys/
+media_subpath: /assets/media/2024/manage-multiple-ssh-keys
 image: ssh-keys.webp
 tags: [linux, ssh]
 pin: false

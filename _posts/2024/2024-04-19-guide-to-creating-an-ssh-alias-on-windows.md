@@ -4,7 +4,7 @@ description: Create SSH aliases on Windows to simplify connecting to remote serv
 date: 2024-04-19 11:33:00 +0800
 categories: linux
 toc: true
-media_subpath: /assets/media/2024/ssh-alias-on-windows/
+media_subpath: /assets/media/2024/ssh-alias-on-windows
 image: ssh-alias.webp
 tags: [linux, ssh]
 pin: false

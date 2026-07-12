@@ -4,7 +4,7 @@ description: Download, install Linux binaries, and create systemd services to ma
 date: 2024-07-01 12:00:00 +0800
 categories: linux
 toc: true
-media_subpath: /assets/media/2024/install-binary-on-linux/
+media_subpath: /assets/media/2024/install-binary-on-linux
 image: systemd-cloudflare.webp
 tags: [linux, cloudflare, systemd]
 pin: false

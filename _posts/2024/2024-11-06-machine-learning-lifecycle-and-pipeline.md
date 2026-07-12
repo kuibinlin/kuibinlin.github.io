@@ -5,7 +5,7 @@ description: Overview of the ML lifecycle stages from problem definition through
 date: 2024-11-06 12:30:00 +0800
 published: true #false or true
 categories: ML
-media_subpath: /assets/media/2024/machine-learning-lifecycle-and-pipeline/
+media_subpath: /assets/media/2024/machine-learning-lifecycle-and-pipeline
 image: machine-learning.webp
 tags: [matplotlib, numpy, python]
 

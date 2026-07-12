@@ -4,7 +4,7 @@ description: Harden SSH security on Debian Linux by adding sudo users, generatin
 date: 2024-04-27 12:00:00 +0800
 categories: linux
 toc: true
-media_subpath: /assets/media/2024/securing-sshd-on-debian/
+media_subpath: /assets/media/2024/securing-sshd-on-debian
 image: sshd.webp
 tags: [linux, ssh]
 pin: false

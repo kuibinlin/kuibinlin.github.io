@@ -4,7 +4,7 @@ description: Learn the differences between POP, SMTP, and IMAP email protocols, 
 date: 2024-04-28 09:00:00 +0800
 categories: linux
 toc: true
-media_subpath: /assets/media/2024/understanding-email-protocols/
+media_subpath: /assets/media/2024/understanding-email-protocols
 image: email-protocol.webp
 tags: [linux, email]
 pin: false

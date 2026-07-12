@@ -5,7 +5,7 @@ description: Troubleshoot common Git push/pull errors and learn how to reconcile
 date: 2024-11-04 12:30:00 +0800
 published: true #false or true
 categories: ML
-media_subpath: /assets/media/2024/fixing-push-and-pull/
+media_subpath: /assets/media/2024/fixing-push-and-pull
 image: github-pull.webp
 tags: [github, git]
 ---

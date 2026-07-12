@@ -4,7 +4,7 @@ title: Logical Fallacies
 description: Learn to identify common logical fallacies to strengthen critical thinking and rational argumentation skills.
 date: 2024-04-01 20:00:00 +0800
 published: true #false or true
-media_subpath: /assets/media/2024/logical-fallacies/
+media_subpath: /assets/media/2024/logical-fallacies
 image: fallacies.webp
 categories: video
 tags: [learning]
