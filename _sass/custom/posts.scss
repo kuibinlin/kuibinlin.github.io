@@ -8,12 +8,9 @@ div.highlighter-rouge {
   overflow-y: auto;
 }
 
-// /* Hide the post title on the home post list */
-// #post-list .card .card-body .card-title {
-//   display: none;
-// }
-
-/* Use single line post title */
-#post-list .card .card-body .card-title {
-  -webkit-line-clamp: 1;
+/* Hide the post title on the home post list — mobile only (desktop keeps the theme default) */
+@media (max-width: 849px) {
+  #post-list .card .card-body .card-title {
+    display: none;
+  }
 }
