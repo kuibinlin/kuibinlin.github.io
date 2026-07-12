@@ -8,12 +8,12 @@ div.highlighter-rouge {
   overflow-y: auto;
 }
 
-/* Hide the post title on the home post list */
-#post-list .card .card-body .card-title {
-  display: none;
-}
+// /* Hide the post title on the home post list */
+// #post-list .card .card-body .card-title {
+//   display: none;
+// }
 
 /* Use single line post title */
-// #post-list .card .card-body .card-title {
-//   -webkit-line-clamp: 1;
-// }
+#post-list .card .card-body .card-title {
+  -webkit-line-clamp: 1;
+}
