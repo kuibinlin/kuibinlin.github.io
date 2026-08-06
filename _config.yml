@@ -24,9 +24,9 @@ tagline: Lin's random notes # it will display as the subtitle
 subtitle_effect:
   type: decode # choose: typewriter | decode
   strings: # phrases to cycle through
-    - "Tinkerer"
-    - "AI Engineer"
     - "Educator"
+    - "Tinkerer"
+    - "Engineer"
   # Shared options
   backDelay: 2000 # ms — pause before switching to next phrase
   startDelay: 500 # ms — delay before animation starts
